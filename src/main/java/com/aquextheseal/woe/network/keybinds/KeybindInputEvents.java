@@ -2,6 +2,7 @@ package com.aquextheseal.woe.network.keybinds;
 
 import com.aquextheseal.woe.Multielementals;
 import com.aquextheseal.woe.network.MENetwork;
+import com.aquextheseal.woe.network.elementdata.OpenElementMenuPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -21,6 +22,10 @@ public class KeybindInputEvents {
             }
             if (WOEKeybindHandler.thirdSkill.consumeClick()) {
                 MENetwork.CHANNEL.sendToServer(new SkillPacket(2, key));
+            }
+
+            if (WOEKeybindHandler.openElementMenu.consumeClick()) {
+                MENetwork.CHANNEL.sendToServer(new OpenElementMenuPacket());
             }
         }
     }

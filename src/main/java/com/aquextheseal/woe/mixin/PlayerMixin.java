@@ -25,6 +25,10 @@ public abstract class PlayerMixin extends LivingEntity implements MagicPlayer {
     private static final EntityDataAccessor<String> ELEMENT = SynchedEntityData.defineId(Player.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> MAGIC_ACTION = SynchedEntityData.defineId(Player.class, EntityDataSerializers.STRING);
 
+    private static final EntityDataAccessor<Integer> FIRST_SKILL_LEVEL = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SECOND_SKILL_LEVEL = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> THIRD_SKILL_LEVEL = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
+    
     private static final EntityDataAccessor<Integer> FIRST_SKILL_CD = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SECOND_SKILL_CD = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> THIRD_SKILL_CD = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
@@ -60,6 +64,10 @@ public abstract class PlayerMixin extends LivingEntity implements MagicPlayer {
         this.entityData.define(ELEMENT, MagicPlayer.EMPTY);
         this.entityData.define(MAGIC_ACTION, MagicPlayer.EMPTY);
 
+        this.entityData.define(FIRST_SKILL_LEVEL, 0);
+        this.entityData.define(SECOND_SKILL_LEVEL, 0);
+        this.entityData.define(THIRD_SKILL_LEVEL, 0);
+
         this.entityData.define(FIRST_SKILL_CD, 0);
         this.entityData.define(SECOND_SKILL_CD, 0);
         this.entityData.define(THIRD_SKILL_CD, 0);
@@ -80,6 +88,18 @@ public abstract class PlayerMixin extends LivingEntity implements MagicPlayer {
             setMagicElement(byItElement);
         }
     }
+
+    @Override public int getFirstSkillLevel() { return this.entityData.get(FIRST_SKILL_LEVEL); }
+
+    @Override public void setFirstSkillLevel(int value) { this.entityData.set(FIRST_SKILL_LEVEL, value); }
+
+    @Override public int getSecondSkillLevel() { return this.entityData.get(SECOND_SKILL_LEVEL); }
+
+    @Override public void setSecondSkillLevel(int value) { this.entityData.set(SECOND_SKILL_LEVEL, value); }
+
+    @Override public int getThirdSkillLevel() { return this.entityData.get(THIRD_SKILL_LEVEL); }
+
+    @Override public void setThirdSkillLevel(int value) { this.entityData.set(THIRD_SKILL_LEVEL, value); }
 
     @Override public int getFirstSkillCD() { return this.entityData.get(FIRST_SKILL_CD); }
 

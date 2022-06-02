@@ -1,9 +1,11 @@
 package com.aquextheseal.woe;
 
 import com.aquextheseal.woe.network.MENetwork;
+import com.aquextheseal.woe.registry.MEContainerTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -25,9 +27,13 @@ public class Multielementals
 
     public Multielementals()
     {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        MEContainerTypes.CONTAINERS.register(bus);
+
+        bus.addListener(this::setup);
+        bus.addListener(this::enqueueIMC);
+        bus.addListener(this::processIMC);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

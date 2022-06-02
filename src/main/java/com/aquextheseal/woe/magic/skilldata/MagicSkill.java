@@ -31,6 +31,8 @@ public abstract class MagicSkill {
 
     public abstract boolean shouldStopActionWhen(Player player);
 
+    public abstract int getExpenseMultiplier();
+
     public final MagicElement getElement() {
         return element;
     }
@@ -39,6 +41,19 @@ public abstract class MagicSkill {
     }
 
     public void baseSkillTick(Player caster, Level world) {
+    }
+
+    public int getLevel(int index, MagicPlayer magicPlayer) {
+        if (matchSkillSlot(getElement().getFirstSkill())) {
+            return magicPlayer.getFirstSkillLevel();
+        }
+        if (matchSkillSlot(getElement().getSecondSkill())) {
+            return magicPlayer.getSecondSkillLevel();
+        }
+        if (matchSkillSlot(getElement().getThirdSkill())) {
+            return magicPlayer.getThirdSkillLevel();
+        }
+        return 0;
     }
 
     public int getCooldownCount(Player entity) {

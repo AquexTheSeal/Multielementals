@@ -9,6 +9,7 @@ import org.lwjgl.glfw.GLFW;
 public class WOEKeybindHandler {
 
     public static KeyMapping firstSkill, secondSkill, thirdSkill;
+    public static KeyMapping openElementMenu;
 
     public static void register(final FMLClientSetupEvent event) {
         firstSkill = create("first_skill", GLFW.GLFW_KEY_Z);
@@ -17,6 +18,9 @@ public class WOEKeybindHandler {
         ClientRegistry.registerKeyBinding(secondSkill);
         thirdSkill = create("third_skill", GLFW.GLFW_MOUSE_BUTTON_MIDDLE);
         ClientRegistry.registerKeyBinding(thirdSkill);
+
+        openElementMenu = create("open_element_menu", GLFW.GLFW_KEY_M);
+        ClientRegistry.registerKeyBinding(openElementMenu);
     }
 
     private static KeyMapping create(String name,  int key) {

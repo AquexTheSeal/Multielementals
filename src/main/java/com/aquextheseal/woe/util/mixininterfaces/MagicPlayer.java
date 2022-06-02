@@ -16,6 +16,18 @@ public interface MagicPlayer {
 
     void setCurrentSkillAction(String skillAction);
 
+    int getFirstSkillLevel();
+
+    void setFirstSkillLevel(int value);
+
+    int getSecondSkillLevel();
+
+    void setSecondSkillLevel(int value);
+
+    int getThirdSkillLevel();
+
+    void setThirdSkillLevel(int value);
+
     int getFirstSkillCD();
 
     void setFirstSkillCD(int value);
