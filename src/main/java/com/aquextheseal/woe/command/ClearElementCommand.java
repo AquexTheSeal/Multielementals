@@ -1,7 +1,6 @@
 package com.aquextheseal.woe.command;
 
 import com.aquextheseal.woe.magic.skilldata.MagicSkill;
-import com.aquextheseal.woe.util.MagicElementUtil;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
@@ -26,17 +25,17 @@ public class ClearElementCommand {
     }
 
     private int clearElement(CommandSourceStack source, Collection<ServerPlayer> pTargets) {
-        for(ServerPlayer player : pTargets) {
+        for (ServerPlayer player : pTargets) {
             if (player instanceof MagicPlayer magicPlayer) {
                 if (magicPlayer.getMagicElement() != null) {
                     for (MagicSkill skill : magicPlayer.getMagicElement().skillsList()) {
                         skill.setCooldownCount(player, 0);
                     }
-                    magicPlayer.setMagicElement(MagicElementUtil.getMagicElementWithString(MagicPlayer.EMPTY));
-                    source.sendSuccess(new TranslatableComponent("Successfully cleared elements"), true);
+                    magicPlayer.setMagicElement(null);
                 }
             }
         }
+        source.sendSuccess(new TranslatableComponent("Successfully cleared elements"), true);
         return pTargets.size();
     }
 }

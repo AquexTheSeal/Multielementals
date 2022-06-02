@@ -40,6 +40,7 @@ public class OverlayEvents {
                     int posX =  w / 2;
                     int posY = h / 2;
 
+                    // First Skill
                     RenderSystem.depthMask(false);
                     RenderSystem.enableBlend();
                     RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -47,26 +48,28 @@ public class OverlayEvents {
 
                     RenderSystem.setShaderColor(rgb, rgb, rgb + 0.05F, 1);
                     RenderSystem.setShaderTexture(0, magic.getFirstSkill().getSkillIcon());
-                    GuiComponent.blit(event.getMatrixStack(), posX + 180, posY + -76, 0, 0, 32, 32, 32, 32);
+                    GuiComponent.blit(event.getMatrixStack(), w - 36, posY + -76, 0, 0, 32, 32, 32, 32);
 
-                    if (magic.getFirstSkill().getCooldownCount(entity) > 0) {
-                        GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, cooldownCount, posX + 183, posY + -66, -1);
+                    if (isOnCooldown) {
+                        GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, cooldownCount, w - 20, posY + -64, -1);
                     }
 
+                    // Second Skill
                     RenderSystem.setShaderColor(rgb2, rgb2, rgb2 + 0.05F, 1);
                     RenderSystem.setShaderTexture(0, magic.getSecondSkill().getSkillIcon());
-                    GuiComponent.blit(event.getMatrixStack(), posX + 180, posY + -36, 0, 0, 32, 32, 32, 32);
+                    GuiComponent.blit(event.getMatrixStack(), w - 36, posY + -36, 0, 0, 32, 32, 32, 32);
 
-                    if (magic.getSecondSkill().getCooldownCount(entity) > 0) {
-                        GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, cooldownCount2, posX + 183, posY + -26, -1);
+                    if (isOnCooldown1) {
+                        GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, cooldownCount2, w - 20, posY + -24, -1);
                     }
 
+                    // Third Skill
                     RenderSystem.setShaderColor(rgb3, rgb3, rgb3 + 0.05F, 1);
                     RenderSystem.setShaderTexture(0, magic.getThirdSkill().getSkillIcon());
-                    GuiComponent.blit(event.getMatrixStack(), posX + 180, posY + 4, 0, 0, 32, 32, 32, 32);
+                    GuiComponent.blit(event.getMatrixStack(), w - 36, posY + 4, 0, 0, 32, 32, 32, 32);
 
-                    if (magic.getThirdSkill().getCooldownCount(entity) > 0) {
-                        GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, cooldownCount3, posX + 183, posY + 14, -1);
+                    if (isOnCooldown2) {
+                        GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, cooldownCount3, w - 20, posY + 16, -1);
                     }
 
                     RenderSystem.depthMask(true);

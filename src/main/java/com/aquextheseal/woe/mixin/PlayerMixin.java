@@ -25,6 +25,10 @@ public abstract class PlayerMixin extends LivingEntity implements MagicPlayer {
     private static final EntityDataAccessor<String> ELEMENT = SynchedEntityData.defineId(Player.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> MAGIC_ACTION = SynchedEntityData.defineId(Player.class, EntityDataSerializers.STRING);
 
+    private static final EntityDataAccessor<Integer> FIRST_SKILL_CD = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SECOND_SKILL_CD = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> THIRD_SKILL_CD = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
+
     // Dummy Constructor
     protected PlayerMixin(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) {
         super(p_20966_, p_20967_);
@@ -55,6 +59,10 @@ public abstract class PlayerMixin extends LivingEntity implements MagicPlayer {
     public void defineDataAccessors(CallbackInfo ci) {
         this.entityData.define(ELEMENT, MagicPlayer.EMPTY);
         this.entityData.define(MAGIC_ACTION, MagicPlayer.EMPTY);
+
+        this.entityData.define(FIRST_SKILL_CD, 0);
+        this.entityData.define(SECOND_SKILL_CD, 0);
+        this.entityData.define(THIRD_SKILL_CD, 0);
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
@@ -72,6 +80,19 @@ public abstract class PlayerMixin extends LivingEntity implements MagicPlayer {
             setMagicElement(byItElement);
         }
     }
+
+    @Override public int getFirstSkillCD() { return this.entityData.get(FIRST_SKILL_CD); }
+
+    @Override public void setFirstSkillCD(int value) { this.entityData.set(FIRST_SKILL_CD, value); }
+
+    @Override public int getSecondSkillCD() { return this.entityData.get(SECOND_SKILL_CD); }
+
+    @Override public void setSecondSkillCD(int value) { this.entityData.set(SECOND_SKILL_CD, value); }
+
+    @Override public int getThirdSkillCD() { return this.entityData.get(THIRD_SKILL_CD); }
+
+    @Override public void setThirdSkillCD(int value) { this.entityData.set(THIRD_SKILL_CD, value); }
+
 
     private static ServerPlayer asServerPlayer(Entity entity) {
         return (ServerPlayer) entity;

@@ -38,7 +38,7 @@ public class SetSkillCooldownClientPacket {
             if (player instanceof MagicPlayer magicPlayer) {
                 MagicElement playerElement = magicPlayer.getMagicElement();
                 if (playerElement != null) {
-                    playerElement.skillsList()[0].setCooldownCountForClient(player, message.cooldown);
+                    playerElement.skillsList().get(index).setCooldownCountForClient(player, message.cooldown);
                 }
             }
         });

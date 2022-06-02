@@ -12,8 +12,16 @@ import net.minecraftforge.fml.common.Mod;
 public class KeybindInputEvents {
 
     private static void onInput(Minecraft mc, int key, int action) {
-        if (mc.screen == null && WOEKeybindHandler.firstSkill.consumeClick()) {
-            MENetwork.CHANNEL.sendToServer(new FirstSkillPacket(key));
+        if (mc.screen == null) {
+            if (WOEKeybindHandler.firstSkill.consumeClick()) {
+                MENetwork.CHANNEL.sendToServer(new SkillPacket(0, key));
+            }
+            if (WOEKeybindHandler.secondSkill.consumeClick()) {
+                MENetwork.CHANNEL.sendToServer(new SkillPacket(1, key));
+            }
+            if (WOEKeybindHandler.thirdSkill.consumeClick()) {
+                MENetwork.CHANNEL.sendToServer(new SkillPacket(2, key));
+            }
         }
     }
 

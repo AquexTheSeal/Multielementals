@@ -10,33 +10,33 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class FirstSkillClientPacket {
+public class SkillClientPacket {
 
     public int index;
     public String elementReg;
 
-    public FirstSkillClientPacket(int index, String elementRegistryName) {
+    public SkillClientPacket(int index, String elementRegistryName) {
         this.index = index;
         this.elementReg = elementRegistryName;
     }
 
-    public static void encode(FirstSkillClientPacket message, FriendlyByteBuf buffer) {
+    public static void encode(SkillClientPacket message, FriendlyByteBuf buffer) {
         buffer.writeInt(message.index);
         buffer.writeUtf(message.elementReg);
     }
 
-    public static FirstSkillClientPacket decode(FriendlyByteBuf buffer) {
-        return new FirstSkillClientPacket(buffer.readInt(), buffer.readUtf(32767));
+    public static SkillClientPacket decode(FriendlyByteBuf buffer) {
+        return new SkillClientPacket(buffer.readInt(), buffer.readUtf(32767));
     }
 
-    public static void execute(FirstSkillClientPacket message, Supplier<NetworkEvent.Context> contextSupplier) {
+    public static void execute(SkillClientPacket message, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             LocalPlayer player = Minecraft.getInstance().player;
             ClientLevel world = Minecraft.getInstance().level;
             int index = Mth.clamp(message.index, 0, 2);
 
-            MagicElementUtil.getMagicElementWithString(message.elementReg).skillsList()[index].onExecution(player, world);
+            MagicElementUtil.getMagicElementWithString(message.elementReg).skillsList().get(index).onExecution(player, world);
         });
         context.setPacketHandled(true);
     }

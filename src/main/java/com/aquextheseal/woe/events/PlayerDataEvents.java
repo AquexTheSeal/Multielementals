@@ -28,6 +28,7 @@ public class PlayerDataEvents {
                         } else {
                             skill.noCDSkillTick(event.player, event.player.getLevel());
                         }
+                        skill.baseSkillTick(event.player, event.player.getLevel());
                     }
                 }
             }

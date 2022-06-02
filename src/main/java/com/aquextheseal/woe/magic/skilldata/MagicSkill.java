@@ -2,8 +2,7 @@ package com.aquextheseal.woe.magic.skilldata;
 
 import com.aquextheseal.woe.magic.MagicElement;
 import com.aquextheseal.woe.network.MENetwork;
-import com.aquextheseal.woe.network.keybinds.FirstSkillClientPacket;
-import com.aquextheseal.woe.network.magicdata.SetSkillCooldownClientPacket;
+import com.aquextheseal.woe.network.keybinds.SkillClientPacket;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,28 +38,37 @@ public abstract class MagicSkill {
     public void noCDSkillTick(Player caster, Level world) {
     }
 
+    public void baseSkillTick(Player caster, Level world) {
+    }
+
     public int getCooldownCount(Player entity) {
-        return entity.getPersistentData().getInt(getRegistryName() + "cooldown");
+
+        if (matchSkillSlot(getElement().getFirstSkill())) {
+            return ((MagicPlayer) entity).getFirstSkillCD();
+        }
+        if (matchSkillSlot(getElement().getSecondSkill())) {
+            return ((MagicPlayer) entity).getSecondSkillCD();
+        }
+        if (matchSkillSlot(getElement().getThirdSkill())) {
+            return ((MagicPlayer) entity).getThirdSkillCD();
+        }
+        return 0;
     }
 
     public void setCooldownCount(Player entity, int value) {
-        entity.getPersistentData().putInt(getRegistryName() + "cooldown", value);
+
         if (entity instanceof ServerPlayer serverPlayer) {
 
-            if (getElement().getFirstSkill().getRegistryName().equals(getRegistryName())) {
-                MENetwork.sendPacketToPlayer(serverPlayer, new SetSkillCooldownClientPacket(0, value));
+            if (matchSkillSlot(getElement().getFirstSkill())) ((MagicPlayer) serverPlayer).setFirstSkillCD(value);
 
-            } else if (getElement().getSecondSkill().getRegistryName().equals(getRegistryName())) {
-                MENetwork.sendPacketToPlayer(serverPlayer, new SetSkillCooldownClientPacket(1, value));
+            if (matchSkillSlot(getElement().getSecondSkill())) ((MagicPlayer) serverPlayer).setSecondSkillCD(value);
 
-            } else if (getElement().getThirdSkill().getRegistryName().equals(getRegistryName())) {
-                MENetwork.sendPacketToPlayer(serverPlayer, new SetSkillCooldownClientPacket(2, value));
-            }
+            if (matchSkillSlot(getElement().getThirdSkill())) ((MagicPlayer) serverPlayer).setThirdSkillCD(value);
         }
     }
 
     public void setCooldownCountForClient(Player entity, int value) {
-        entity.getPersistentData().putInt(getRegistryName() + "cooldown", value);
+        entity.getPersistentData().putInt(getRegistryName() + ":cooldown", value);
     }
 
     public void execute(Player caster, Level world) {
@@ -69,17 +77,23 @@ public abstract class MagicSkill {
             if (caster instanceof ServerPlayer serverPlayer && serverPlayer instanceof MagicPlayer magicPlayer) {
                 magicPlayer.setCurrentSkillAction(getRegistryName());
 
-                if (getElement().getFirstSkill().getRegistryName().equals(getRegistryName())) {
-                    MENetwork.sendPacketToPlayer(serverPlayer, new FirstSkillClientPacket(0, getElement().getElementRegistryName()));
+                if (matchSkillSlot(getElement().getFirstSkill())) {
+                    MENetwork.sendPacketToPlayer(serverPlayer, new SkillClientPacket(0, element.getElementRegistryName()));
+                }
 
-                } else if (getElement().getSecondSkill().getRegistryName().equals(getRegistryName())) {
-                    MENetwork.sendPacketToPlayer(serverPlayer, new FirstSkillClientPacket(1, getElement().getElementRegistryName()));
+                if (matchSkillSlot(getElement().getSecondSkill())) {
+                    MENetwork.sendPacketToPlayer(serverPlayer, new SkillClientPacket(1, element.getElementRegistryName()));
+                }
 
-                } else if (getElement().getThirdSkill().getRegistryName().equals(getRegistryName())) {
-                    MENetwork.sendPacketToPlayer(serverPlayer, new FirstSkillClientPacket(2, getElement().getElementRegistryName()));
+                if (matchSkillSlot(getElement().getThirdSkill())) {
+                    MENetwork.sendPacketToPlayer(serverPlayer, new SkillClientPacket(2, element.getElementRegistryName()));
                 }
             }
             this.setCooldownCount(caster, getMaxCooldown(caster));
         }
+    }
+
+    public boolean matchSkillSlot(MagicSkill skill) {
+        return skill.getRegistryName().equals(this.getRegistryName());
     }
 }

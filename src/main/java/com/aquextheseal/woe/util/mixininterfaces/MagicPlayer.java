@@ -15,4 +15,16 @@ public interface MagicPlayer {
     String getCurrentSkillAction();
 
     void setCurrentSkillAction(String skillAction);
+
+    int getFirstSkillCD();
+
+    void setFirstSkillCD(int value);
+
+    int getSecondSkillCD();
+
+    void setSecondSkillCD(int value);
+
+    int getThirdSkillCD();
+
+    void setThirdSkillCD(int value);
 }
