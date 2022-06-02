@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.aquextheseal.woe.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "woe.refmap.json",
+  "mixins": [
+    "PlayerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "HumanoidModelMixin"
+  ]
+}
