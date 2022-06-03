@@ -43,7 +43,7 @@ public abstract class MagicSkill {
     public void baseSkillTick(Player caster, Level world) {
     }
 
-    public int getLevel(int index, MagicPlayer magicPlayer) {
+    public int getLevel(MagicPlayer magicPlayer) {
         if (matchSkillSlot(getElement().getFirstSkill())) {
             return magicPlayer.getFirstSkillLevel();
         }

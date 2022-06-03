@@ -1,7 +1,7 @@
 package com.aquextheseal.woe.mixin;
 
 import com.aquextheseal.woe.magic.MagicElement;
-import com.aquextheseal.woe.util.MagicElementUtil;
+import com.aquextheseal.woe.util.MEMechanicUtil;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -25,13 +25,9 @@ public abstract class PlayerMixin extends LivingEntity implements MagicPlayer {
     private static final EntityDataAccessor<String> ELEMENT = SynchedEntityData.defineId(Player.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> MAGIC_ACTION = SynchedEntityData.defineId(Player.class, EntityDataSerializers.STRING);
 
-    private static final EntityDataAccessor<Integer> FIRST_SKILL_LEVEL = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> SECOND_SKILL_LEVEL = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> THIRD_SKILL_LEVEL = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
-    
-    private static final EntityDataAccessor<Integer> FIRST_SKILL_CD = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> SECOND_SKILL_CD = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> THIRD_SKILL_CD = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer>
+            FIRST_SKILL_LEVEL = createIntData(), SECOND_SKILL_LEVEL = createIntData(), THIRD_SKILL_LEVEL = createIntData(),
+            FIRST_SKILL_CD = createIntData(), SECOND_SKILL_CD = createIntData(), THIRD_SKILL_CD = createIntData();
 
     // Dummy Constructor
     protected PlayerMixin(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) {
@@ -41,12 +37,17 @@ public abstract class PlayerMixin extends LivingEntity implements MagicPlayer {
     @Override
     @Nullable
     public MagicElement getMagicElement() {
-        return MagicElementUtil.getMagicElementWithString(this.entityData.get(ELEMENT));
+        return MEMechanicUtil.getMagicElementWithString(this.entityData.get(ELEMENT));
     }
 
     @Override
     public void setMagicElement(MagicElement element) {
         this.entityData.set(ELEMENT, element.getElementRegistryName());
+    }
+
+    @Override
+    public void setMagicElement(String element) {
+        this.entityData.set(ELEMENT, element);
     }
 
     @Override
@@ -83,10 +84,14 @@ public abstract class PlayerMixin extends LivingEntity implements MagicPlayer {
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     public void loadData(CompoundTag pCompound, CallbackInfo ci) {
-        MagicElement byItElement = MagicElementUtil.getMagicElementWithString(pCompound.getString("magicElement"));
+        MagicElement byItElement = MEMechanicUtil.getMagicElementWithString(pCompound.getString("magicElement"));
         if (byItElement != null) {
             setMagicElement(byItElement);
         }
+    }
+
+    private static EntityDataAccessor<Integer> createIntData() {
+        return SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
     }
 
     @Override public int getFirstSkillLevel() { return this.entityData.get(FIRST_SKILL_LEVEL); }

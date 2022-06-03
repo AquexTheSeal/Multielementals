@@ -1,6 +1,6 @@
 package com.aquextheseal.woe.network.keybinds;
 
-import com.aquextheseal.woe.util.MagicElementUtil;
+import com.aquextheseal.woe.util.MEMechanicUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -36,7 +36,7 @@ public class SkillClientPacket {
             ClientLevel world = Minecraft.getInstance().level;
             int index = Mth.clamp(message.index, 0, 2);
 
-            MagicElementUtil.getMagicElementWithString(message.elementReg).skillsList().get(index).onExecution(player, world);
+            MEMechanicUtil.getMagicElementWithString(message.elementReg).skillsList().get(index).onExecution(player, world);
         });
         context.setPacketHandled(true);
     }

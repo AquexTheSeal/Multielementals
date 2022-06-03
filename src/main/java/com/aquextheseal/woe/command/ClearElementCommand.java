@@ -31,8 +31,11 @@ public class ClearElementCommand {
                     for (MagicSkill skill : magicPlayer.getMagicElement().skillsList()) {
                         skill.setCooldownCount(player, 0);
                     }
-                    magicPlayer.setMagicElement(null);
+                    magicPlayer.setFirstSkillLevel(0);
+                    magicPlayer.setSecondSkillLevel(0);
+                    magicPlayer.setThirdSkillLevel(0);
                 }
+                magicPlayer.setMagicElement(MagicPlayer.EMPTY);
             }
         }
         source.sendSuccess(new TranslatableComponent("Successfully cleared elements"), true);

@@ -1,9 +1,9 @@
 package com.aquextheseal.woe.gui;
 
 import com.aquextheseal.woe.Multielementals;
-import com.aquextheseal.woe.magic.skilldata.MagicSkill;
 import com.aquextheseal.woe.network.MENetwork;
 import com.aquextheseal.woe.network.elementdata.SetSkillLevelPacket;
+import com.aquextheseal.woe.util.MEMechanicUtil;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -64,13 +64,13 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
             blit(ms, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 
             RenderSystem.setShaderTexture(0, magicPlayer.getMagicElement().getFirstSkill().getSkillIcon());
-            blit(ms, this.leftPos + 20, this.topPos + 48, 0, 0, 32, 32, 32, 32);
+            blit(ms, this.leftPos + 25, this.topPos + 48, 0, 0, 32, 32, 32, 32);
 
             RenderSystem.setShaderTexture(0, magicPlayer.getMagicElement().getSecondSkill().getSkillIcon());
-            blit(ms, this.leftPos + 121, this.topPos + 49, 0, 0, 32, 32, 32, 32);
+            blit(ms, this.leftPos + 125, this.topPos + 48, 0, 0, 32, 32, 32, 32);
 
             RenderSystem.setShaderTexture(0, magicPlayer.getMagicElement().getThirdSkill().getSkillIcon());
-            blit(ms, this.leftPos + 220, this.topPos + 48, 0, 0, 32, 32, 32, 32);
+            blit(ms, this.leftPos + 225, this.topPos + 48, 0, 0, 32, 32, 32, 32);
 
             RenderSystem.disableBlend();
         }
@@ -92,10 +92,34 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
 
     @Override
     protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-        GuiComponent.drawCenteredString(poseStack, minecraft.font, "element menu", 128, 6, -12829636);
-        this.font.draw(poseStack, "cost1", 23, 17, -12829636);
-        this.font.draw(poseStack, "cost2", 124, 17, -12829636);
-        this.font.draw(poseStack, "cost3", 221, 18, -12829636);
+        LocalPlayer player = minecraft.player;
+        MagicPlayer magicPlayer = (MagicPlayer) player;
+
+        GuiComponent.drawCenteredString(poseStack, minecraft.font, new TranslatableComponent("element menu"), 141, 6, -12829636);
+
+        int costMultiplier = MEMechanicUtil.getSkillIndex(0, magicPlayer).getExpenseMultiplier();
+        int cost = ((MEMechanicUtil.getLevelOfSkill(0, magicPlayer) + 1) * 3) * costMultiplier;
+
+        GuiComponent.drawCenteredString(poseStack, minecraft.font,
+                new TranslatableComponent("cost1: ", cost),
+                36, 18, -12829636
+        );
+
+        int costMultiplier1 = MEMechanicUtil.getSkillIndex(1, magicPlayer).getExpenseMultiplier();
+        int cost1 = ((MEMechanicUtil.getLevelOfSkill(1, magicPlayer) + 1) * 3) * costMultiplier1;
+
+        GuiComponent.drawCenteredString(poseStack, minecraft.font,
+                new TranslatableComponent("cost2", cost1),
+                137, 18, -12829636
+        );
+
+        int costMultiplier2 = MEMechanicUtil.getSkillIndex(2, magicPlayer).getExpenseMultiplier();
+        int cost2 = ((MEMechanicUtil.getLevelOfSkill(2, magicPlayer) + 1) * 3) * costMultiplier2;
+
+        GuiComponent.drawCenteredString(poseStack, minecraft.font,
+                new TranslatableComponent("cost3", cost2),
+                234, 18, -12829636
+        );
 
     }
 
@@ -109,13 +133,14 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
     public void init() {
         super.init();
         this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
-        this.addRenderableWidget(new ElementUpgradeButton(0, this.leftPos + 7, this.topPos + 25, 61, 20, 0, 19, UPGRADE_BUTTON_LOCATION,
+
+        this.addRenderableWidget(new ElementUpgradeButton(0, this.leftPos + 7, this.topPos + 29, 61, 18, 0, 0, 19, UPGRADE_BUTTON_LOCATION, 256, 256,
                 (e) -> {
         }));
-        this.addRenderableWidget(new ElementUpgradeButton(1, this.leftPos + 106, this.topPos + 25, 61, 20,0, 19, UPGRADE_BUTTON_LOCATION,
+        this.addRenderableWidget(new ElementUpgradeButton(1, this.leftPos + 106, this.topPos + 29, 61, 18, 0, 0, 19, UPGRADE_BUTTON_LOCATION, 256, 256,
                 (e) -> {
         }));
-        this.addRenderableWidget(new ElementUpgradeButton(2, this.leftPos + 205, this.topPos + 25, 61, 20,0, 19, UPGRADE_BUTTON_LOCATION,
+        this.addRenderableWidget(new ElementUpgradeButton(2, this.leftPos + 205, this.topPos + 29, 61, 18, 0, 0, 19, UPGRADE_BUTTON_LOCATION, 256, 256,
                 (e) -> {
         }));
     }
@@ -123,39 +148,38 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
     public static class ElementUpgradeButton extends ImageButton {
 
         public int skillIndex;
+        Minecraft mc = Minecraft.getInstance();
+        LocalPlayer player = mc.player;
+        MagicPlayer magicPlayer = (MagicPlayer) player;
+        public int costMultiplier = MEMechanicUtil.getSkillIndex(skillIndex, magicPlayer).getExpenseMultiplier();
+        public int cost = ((MEMechanicUtil.getLevelOfSkill(skillIndex, magicPlayer) + 1) * 3) * costMultiplier;
 
-        public ElementUpgradeButton(int skillIndex, int pX, int pY, int pWidth, int pHeight, int pXTexStart, int pYTexStart, ResourceLocation pResourceLocation, OnPress pOnPress) {
-            super(pX, pY, pWidth, pHeight, pXTexStart, pYTexStart, pResourceLocation, pOnPress);
+        public ElementUpgradeButton(int skillIndex, int pX, int pY, int pWidth, int pHeight, int pXTexStart, int pYTexStart, int pYDiffTex, ResourceLocation pResourceLocation, int pTextureWidth, int pTextureHeight, OnPress pOnPress) {
+            super(pX, pY, pWidth, pHeight, pXTexStart, pYTexStart, pYDiffTex, pResourceLocation, pTextureWidth, pTextureHeight, pOnPress);
             this.skillIndex = skillIndex;
         }
 
         @Override
         public void onPress() {
             super.onPress();
-            Minecraft mc = Minecraft.getInstance();
-            LocalPlayer player = mc.player;
-            MagicPlayer magicPlayer = (MagicPlayer) player;
 
             assert magicPlayer != null;
             if (magicPlayer.getMagicElement() != null) {
-                if (player.experienceLevel <= getSkillIndex(magicPlayer).getExpenseMultiplier()) {
+
+                if (player.experienceLevel < cost) {
                     player.closeContainer();
                     mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.WITHER_BREAK_BLOCK, 1.0F));
                     player.displayClientMessage(new TranslatableComponent("You don't have enough Experience Points to level up this skill!").withStyle(ChatFormatting.RED), false);
                 } else {
-                    int val = getSkillIndex(magicPlayer).getLevel(skillIndex, magicPlayer);
-                    MENetwork.CHANNEL.sendToServer(new SetSkillLevelPacket(skillIndex, val + 1));
+                    int val = MEMechanicUtil.getLevelOfSkill(skillIndex, magicPlayer);
+                    int xpChange = -(cost * 25);
+
+                    mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.PLAYER_LEVELUP, 1.75F));
+                    mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.SHULKER_SHOOT, 1.75F));
+                    player.giveExperiencePoints(xpChange);
+                    MENetwork.CHANNEL.sendToServer(new SetSkillLevelPacket(skillIndex, val + 1, xpChange));
                 }
             }
-        }
-
-        public MagicSkill getSkillIndex(MagicPlayer magicPlayer) {
-            return switch (skillIndex) {
-                case 0 -> magicPlayer.getMagicElement().getFirstSkill();
-                case 1 -> magicPlayer.getMagicElement().getSecondSkill();
-                case 2 -> magicPlayer.getMagicElement().getThirdSkill();
-                default -> null;
-            };
         }
     }
 }

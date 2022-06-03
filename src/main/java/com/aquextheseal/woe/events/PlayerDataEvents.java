@@ -35,19 +35,19 @@ public class PlayerDataEvents {
         }
     }
 
-    // ForgeHook that triggers on player's cloning (Death triggers it too).
     @SubscribeEvent
-    public static void onPlayerTick(PlayerEvent.Clone event) {
+    public static void onPlayerClone(PlayerEvent.Clone event) {
 
-        // checks if the cause of clone was by death.
         if (event.isWasDeath()) {
+            MagicPlayer magicOriginal = (MagicPlayer) event.getOriginal();
+            MagicPlayer magicPlayer = (MagicPlayer) event.getPlayer();
 
-            // Gets the magic element from the previous/original player before death.
-            // event.getOriginal() = the original player before death.
-            MagicElement element = ((MagicPlayer) event.getOriginal()).getMagicElement();
+            MagicElement element = magicOriginal.getMagicElement();
+            magicPlayer.setMagicElement(element);
 
-            // Sets the magic element of the cloned/respawned player with the magic element variable above.
-            ((MagicPlayer) event.getPlayer()).setMagicElement(element);
+            int level = magicOriginal.getFirstSkillLevel(); magicPlayer.setFirstSkillLevel(level);
+            int level1 = magicOriginal.getSecondSkillLevel(); magicPlayer.setSecondSkillLevel(level1);
+            int level2 = magicOriginal.getThirdSkillLevel(); magicPlayer.setThirdSkillLevel(level2);
         }
     }
 }

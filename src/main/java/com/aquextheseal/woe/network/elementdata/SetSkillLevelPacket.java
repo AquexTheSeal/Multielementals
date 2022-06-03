@@ -1,7 +1,10 @@
 package com.aquextheseal.woe.network.elementdata;
 
+import com.aquextheseal.woe.util.MEMechanicUtil;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
@@ -12,21 +15,25 @@ public class SetSkillLevelPacket {
 
     public int index;
     public int value;
+    public int xpChange;
 
     public SetSkillLevelPacket() {
     }
 
-    public SetSkillLevelPacket(int index, int value) {
+    public SetSkillLevelPacket(int index, int value, int xpChange) {
         this.index = index;
         this.value = value;
+        this.xpChange = xpChange;
     }
 
     public static void encode(SetSkillLevelPacket message, FriendlyByteBuf buffer) {
         buffer.writeInt(message.index);
+        buffer.writeInt(message.value);
+        buffer.writeInt(message.xpChange);
     }
 
     public static SetSkillLevelPacket decode(FriendlyByteBuf buffer) {
-        return new SetSkillLevelPacket(buffer.readInt(), buffer.readInt());
+        return new SetSkillLevelPacket(buffer.readInt(), buffer.readInt(), buffer.readInt());
     }
 
     public static void execute(SetSkillLevelPacket message, Supplier<NetworkEvent.Context> contextSupplier) {
@@ -36,12 +43,14 @@ public class SetSkillLevelPacket {
             Level world = player.getCommandSenderWorld();
 
             if (player instanceof MagicPlayer magicPlayer) {
-                if (magicPlayer.getMagicElement() != null) {
-                    switch (message.index) {
-                        case 0: magicPlayer.setFirstSkillLevel(message.value);
-                        case 1: magicPlayer.setSecondSkillLevel(message.value);
-                        case 2: magicPlayer.setThirdSkillLevel(message.value);
-                    }
+                MEMechanicUtil.setSkillLevelOfIndex(message.index, message.value, magicPlayer);
+                player.giveExperiencePoints(message.xpChange);
+
+                if (world instanceof ServerLevel server) {
+                    server.sendParticles(
+                            ParticleTypes.ENCHANT, player.getX(), player.getY() + 0.75D, player.getZ(),
+                            40, 0.75F, 0.75F, 0.75F, 0.01
+                    );
                 }
             }
         });

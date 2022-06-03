@@ -49,6 +49,7 @@ public class OverlayEvents {
                     RenderSystem.setShaderColor(rgb, rgb, rgb + 0.05F, 1);
                     RenderSystem.setShaderTexture(0, magic.getFirstSkill().getSkillIcon());
                     GuiComponent.blit(event.getMatrixStack(), w - 36, posY + -76, 0, 0, 32, 32, 32, 32);
+                    GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, "" + magic.getFirstSkill().getLevel(magicPlayer), w - 20, posY + -50, -1);
 
                     if (isOnCooldown) {
                         GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, cooldownCount, w - 20, posY + -64, -1);
@@ -58,6 +59,7 @@ public class OverlayEvents {
                     RenderSystem.setShaderColor(rgb2, rgb2, rgb2 + 0.05F, 1);
                     RenderSystem.setShaderTexture(0, magic.getSecondSkill().getSkillIcon());
                     GuiComponent.blit(event.getMatrixStack(), w - 36, posY + -36, 0, 0, 32, 32, 32, 32);
+                    GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, "" + magic.getSecondSkill().getLevel(magicPlayer), w - 20, posY + -10, -1);
 
                     if (isOnCooldown1) {
                         GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, cooldownCount2, w - 20, posY + -24, -1);
@@ -67,6 +69,7 @@ public class OverlayEvents {
                     RenderSystem.setShaderColor(rgb3, rgb3, rgb3 + 0.05F, 1);
                     RenderSystem.setShaderTexture(0, magic.getThirdSkill().getSkillIcon());
                     GuiComponent.blit(event.getMatrixStack(), w - 36, posY + 4, 0, 0, 32, 32, 32, 32);
+                    GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, "" + magic.getThirdSkill().getLevel(magicPlayer), w - 20, posY + 30, -1);
 
                     if (isOnCooldown2) {
                         GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, cooldownCount3, w - 20, posY + 16, -1);

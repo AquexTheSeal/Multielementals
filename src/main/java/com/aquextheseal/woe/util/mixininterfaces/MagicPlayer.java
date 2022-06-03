@@ -12,6 +12,8 @@ public interface MagicPlayer {
 
     void setMagicElement(MagicElement element);
 
+    void setMagicElement(String element);
+
     String getCurrentSkillAction();
 
     void setCurrentSkillAction(String skillAction);

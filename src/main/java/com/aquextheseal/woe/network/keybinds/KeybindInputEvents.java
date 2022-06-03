@@ -3,6 +3,7 @@ package com.aquextheseal.woe.network.keybinds;
 import com.aquextheseal.woe.Multielementals;
 import com.aquextheseal.woe.network.MENetwork;
 import com.aquextheseal.woe.network.elementdata.OpenElementMenuPacket;
+import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -25,7 +26,9 @@ public class KeybindInputEvents {
             }
 
             if (WOEKeybindHandler.openElementMenu.consumeClick()) {
-                MENetwork.CHANNEL.sendToServer(new OpenElementMenuPacket());
+                if (((MagicPlayer) mc.player).getMagicElement() != null) {
+                    MENetwork.CHANNEL.sendToServer(new OpenElementMenuPacket());
+                }
             }
         }
     }
