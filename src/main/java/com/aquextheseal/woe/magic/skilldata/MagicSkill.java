@@ -82,10 +82,6 @@ public abstract class MagicSkill {
         }
     }
 
-    public void setCooldownCountForClient(Player entity, int value) {
-        entity.getPersistentData().putInt(getRegistryName() + ":cooldown", value);
-    }
-
     public void execute(Player caster, Level world) {
         if (this.getCooldownCount(caster) == 0) {
             this.onExecution(caster, world);

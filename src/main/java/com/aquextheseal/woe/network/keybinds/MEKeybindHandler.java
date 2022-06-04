@@ -6,7 +6,7 @@ import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.lwjgl.glfw.GLFW;
 
-public class WOEKeybindHandler {
+public class MEKeybindHandler {
 
     public static KeyMapping firstSkill, secondSkill, thirdSkill;
     public static KeyMapping openElementMenu;

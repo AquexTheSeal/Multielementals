@@ -12,17 +12,17 @@ public class FireElement extends MagicElement {
     }
 
     @Override
-    public MagicSkill getFirstSkill() {
+    public final MagicSkill getFirstSkill() {
         return new FlamingLeapSkill("flaming_leap");
     }
 
     @Override
-    public MagicSkill getSecondSkill() {
+    public final MagicSkill getSecondSkill() {
         return new FlamingLeapSkill("test_2nd");
     }
 
     @Override
-    public MagicSkill getThirdSkill() {
+    public final MagicSkill getThirdSkill() {
         return new FlamingLeapSkill("test_3rd");
     }
 }

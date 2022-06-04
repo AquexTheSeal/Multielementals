@@ -9,23 +9,38 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.lwjgl.glfw.GLFW;
 
 @Mod.EventBusSubscriber(modid = Multielementals.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class KeybindInputEvents {
 
     private static void onInput(Minecraft mc, int key, int action) {
         if (mc.screen == null) {
-            if (WOEKeybindHandler.firstSkill.consumeClick()) {
-                MENetwork.CHANNEL.sendToServer(new SkillPacket(0, key));
-            }
-            if (WOEKeybindHandler.secondSkill.consumeClick()) {
-                MENetwork.CHANNEL.sendToServer(new SkillPacket(1, key));
-            }
-            if (WOEKeybindHandler.thirdSkill.consumeClick()) {
-                MENetwork.CHANNEL.sendToServer(new SkillPacket(2, key));
+            if (key == MEKeybindHandler.firstSkill.getKey().getValue()) {
+                if (action == GLFW.GLFW_PRESS) {
+                    MENetwork.CHANNEL.sendToServer(new SkillPacket(0, key));
+                } else if (action == GLFW.GLFW_RELEASE) {
+                    MENetwork.CHANNEL.sendToServer(new SkillPacket(0, key, true));
+                }
             }
 
-            if (WOEKeybindHandler.openElementMenu.consumeClick()) {
+            if (key == MEKeybindHandler.secondSkill.getKey().getValue()) {
+                if (action == GLFW.GLFW_PRESS) {
+                    MENetwork.CHANNEL.sendToServer(new SkillPacket(1, key));
+                } else if (action == GLFW.GLFW_RELEASE) {
+                    MENetwork.CHANNEL.sendToServer(new SkillPacket(1, key, true));
+                }
+            }
+
+            if (key == MEKeybindHandler.thirdSkill.getKey().getValue()) {
+                if (action == GLFW.GLFW_PRESS) {
+                    MENetwork.CHANNEL.sendToServer(new SkillPacket(2, key));
+                } else if (action == GLFW.GLFW_RELEASE) {
+                    MENetwork.CHANNEL.sendToServer(new SkillPacket(2, key, true));
+                }
+            }
+
+            if (MEKeybindHandler.openElementMenu.consumeClick()) {
                 if (((MagicPlayer) mc.player).getMagicElement() != null) {
                     MENetwork.CHANNEL.sendToServer(new OpenElementMenuPacket());
                 }

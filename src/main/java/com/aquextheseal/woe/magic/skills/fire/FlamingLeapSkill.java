@@ -3,6 +3,7 @@ package com.aquextheseal.woe.magic.skills.fire;
 import com.aquextheseal.woe.Multielementals;
 import com.aquextheseal.woe.magic.skilldata.MagicSkill;
 import com.aquextheseal.woe.registry.MEMagicElements;
+import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -27,11 +28,13 @@ public class FlamingLeapSkill extends MagicSkill {
 
     @Override
     public void onExecution(Player caster, Level world) {
+        MagicPlayer magicPlayer = (MagicPlayer) caster;
+
         caster.playSound(SoundEvents.FIRE_EXTINGUISH, 1F, 1F);
         caster.playSound(SoundEvents.SHULKER_SHOOT, 1F, 1F);
-        caster.setDeltaMovement(caster.getDeltaMovement().add(0, 1, 0));
+        caster.setDeltaMovement(caster.getDeltaMovement().add(0, 0.5 + (float) (getLevel(magicPlayer) / 25), 0));
 
-        caster.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 40, 0));
+        caster.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 40 + (getLevel(magicPlayer) / 2), 0));
         if (!world.getBlockState(caster.blockPosition().below()).isAir()) {
             world.setBlock(caster.blockPosition(), Blocks.FIRE.defaultBlockState(), 2);
         }
@@ -63,7 +66,7 @@ public class FlamingLeapSkill extends MagicSkill {
 
     @Override
     public int getMaxCooldown(Player caster) {
-        return 300 - Mth.clamp((caster.experienceLevel / 2), 0, 200);
+        return 300 - Mth.clamp((caster.experienceLevel / 2), 0, 150);
     }
 
     @Override

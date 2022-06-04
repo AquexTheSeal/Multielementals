@@ -2,7 +2,7 @@ package com.aquextheseal.woe.client;
 
 import com.aquextheseal.woe.Multielementals;
 import com.aquextheseal.woe.gui.ElementMenuScreen;
-import com.aquextheseal.woe.network.keybinds.WOEKeybindHandler;
+import com.aquextheseal.woe.network.keybinds.MEKeybindHandler;
 import com.aquextheseal.woe.registry.MEContainerTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,7 +14,7 @@ public class ClientHandler {
 
     @SubscribeEvent
     public static void onClientRegistry(FMLClientSetupEvent event) {
-        WOEKeybindHandler.register(event);
+        MEKeybindHandler.register(event);
 
         event.enqueueWork(() -> {
             MenuScreens.register(MEContainerTypes.ELEMENT_MENU.get(), ElementMenuScreen::new);

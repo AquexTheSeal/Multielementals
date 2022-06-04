@@ -1,5 +1,7 @@
 package com.aquextheseal.woe.network.keybinds;
 
+import com.aquextheseal.woe.magic.skilldata.HoldableMagicSkill;
+import com.aquextheseal.woe.magic.skilldata.MagicSkill;
 import com.aquextheseal.woe.util.MEMechanicUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -14,19 +16,26 @@ public class SkillClientPacket {
 
     public int index;
     public String elementReg;
+    public boolean onRelease;
 
     public SkillClientPacket(int index, String elementRegistryName) {
+        this(index, elementRegistryName, false);
+    }
+
+    public SkillClientPacket(int index, String elementRegistryName, boolean onRelease) {
         this.index = index;
         this.elementReg = elementRegistryName;
+        this.onRelease = onRelease;
     }
 
     public static void encode(SkillClientPacket message, FriendlyByteBuf buffer) {
         buffer.writeInt(message.index);
         buffer.writeUtf(message.elementReg);
+        buffer.writeBoolean(message.onRelease);
     }
 
     public static SkillClientPacket decode(FriendlyByteBuf buffer) {
-        return new SkillClientPacket(buffer.readInt(), buffer.readUtf(32767));
+        return new SkillClientPacket(buffer.readInt(), buffer.readUtf(32767), buffer.readBoolean());
     }
 
     public static void execute(SkillClientPacket message, Supplier<NetworkEvent.Context> contextSupplier) {
@@ -35,8 +44,15 @@ public class SkillClientPacket {
             LocalPlayer player = Minecraft.getInstance().player;
             ClientLevel world = Minecraft.getInstance().level;
             int index = Mth.clamp(message.index, 0, 2);
+            MagicSkill skill = MEMechanicUtil.getMagicElementWithString(message.elementReg).skillsList().get(index);
 
-            MEMechanicUtil.getMagicElementWithString(message.elementReg).skillsList().get(index).onExecution(player, world);
+            if (!message.onRelease) {
+                skill.onExecution(player, world);
+            } else {
+                if (skill instanceof HoldableMagicSkill holdableSkill) {
+                    holdableSkill.onRelease(player, world);
+                }
+            }
         });
         context.setPacketHandled(true);
     }
