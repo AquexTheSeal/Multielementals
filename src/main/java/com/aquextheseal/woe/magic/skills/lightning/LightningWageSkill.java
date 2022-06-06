@@ -34,6 +34,7 @@ public class LightningWageSkill extends HoldableMagicSkill {
     @Override
     public void onExecution(Player caster, Level world) {
         caster.getPersistentData().putBoolean(getRegistryName() + "holdingOn", true);
+        caster.playSound(SoundEvents.BEACON_ACTIVATE, 1.0F, 2.5F);
     }
 
     @Override
@@ -41,14 +42,14 @@ public class LightningWageSkill extends HoldableMagicSkill {
         if (caster.getPersistentData().getInt(getRegistryName() + "skillTimer") >= 40) {
             double d0 = -Mth.sin(caster.getYRot() * ((float)Math.PI / 180F));
             double d1 = Mth.cos(caster.getYRot() * ((float)Math.PI / 180F));
-            addBolt(caster, world, d0 * 4, d1 * 4);
+            addBolt(caster, world, d0 * 6, d1 * 6);
 
             if (getLevel((MagicPlayer) caster) >= 15) {
-                addBolt(caster, world, -(d0 * 4), -(d1 * 4));
+                addBolt(caster, world, -(d0 * 6), -(d1 * 6));
             }
             if (getLevel((MagicPlayer) caster) >= 35) {
-                addBolt(caster, world, d0 * 4, -(d1 * 4));
-                addBolt(caster, world, -(d0 * 4), d1 * 4);
+                addBolt(caster, world, d0 * 6, -(d1 * 6));
+                addBolt(caster, world, -(d0 * 6), d1 * 6);
             }
             caster.addEffect(
                     new MobEffectInstance(MobEffects.MOVEMENT_SPEED,
@@ -63,6 +64,7 @@ public class LightningWageSkill extends HoldableMagicSkill {
                 );
             }
         }
+
         caster.getPersistentData().putInt(getRegistryName() + "skillTimer", 0);
         caster.getPersistentData().putBoolean(getRegistryName() + "holdingOn", false);
     }
@@ -88,7 +90,8 @@ public class LightningWageSkill extends HoldableMagicSkill {
 
             MEDataUtil.addCompoundInt(caster, getRegistryName() + "soundTimer", 1);
             if (caster.getPersistentData().getInt(getRegistryName() + "soundTimer") > 20) {
-                caster.playSound(SoundEvents.SHULKER_SHOOT, 1.0F, 3.4F);
+                caster.playSound(SoundEvents.SHULKER_SHOOT, 0.5F, 3.4F);
+                caster.playSound(SoundEvents.AXE_SCRAPE, 0.75F, 3.4F);
                 if (world instanceof ServerLevel server) {
                     server.sendParticles(
                             ParticleTypes.POOF, caster.getX(), caster.getY() + 0.75D, caster.getZ(),

@@ -1,5 +1,6 @@
 package com.aquextheseal.woe.magic.skilldata;
 
+import com.aquextheseal.woe.Multielementals;
 import com.aquextheseal.woe.magic.MagicElement;
 import com.aquextheseal.woe.network.MENetwork;
 import com.aquextheseal.woe.network.keybinds.SkillClientPacket;
@@ -35,6 +36,14 @@ public abstract class MagicSkill {
 
     public final MagicElement getElement() {
         return element;
+    }
+
+    public final String getTranslationKey() {
+        return "skill." + Multielementals.MODID + "." + getRegistryName();
+    }
+
+    public final String getDescriptionKey() {
+        return getTranslationKey() + ".desc";
     }
 
     public void noCDSkillTick(Player caster, Level world) {

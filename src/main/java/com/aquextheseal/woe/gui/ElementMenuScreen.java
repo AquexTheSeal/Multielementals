@@ -94,33 +94,60 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
     protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
         LocalPlayer player = minecraft.player;
         MagicPlayer magicPlayer = (MagicPlayer) player;
+        String skillCostKey = "info." + Multielementals.MODID + ".element_menu.skill_cost";
+        float descScale = 0.5F;
 
-        GuiComponent.drawCenteredString(poseStack, minecraft.font, new TranslatableComponent("element menu"), 141, 6, -12829636);
+        GuiComponent.drawCenteredString(poseStack, minecraft.font, new TranslatableComponent("info." + Multielementals.MODID + ".element_menu"), 141, 6, -12829636);
 
+        // Skill 1
         int costMultiplier = MEMechanicUtil.getSkillIndex(0, magicPlayer).getExpenseMultiplier();
         int cost = ((MEMechanicUtil.getLevelOfSkill(0, magicPlayer) + 1) * 3) * costMultiplier;
 
         GuiComponent.drawCenteredString(poseStack, minecraft.font,
-                new TranslatableComponent("cost1: ", cost),
+                new TranslatableComponent(skillCostKey, cost),
                 36, 18, -12829636
         );
 
+        poseStack.pushPose();
+        poseStack.scale(descScale, descScale, descScale);
+        this.minecraft.font.drawWordWrap(
+                new TranslatableComponent(MEMechanicUtil.getSkillIndex(0, magicPlayer).getDescriptionKey()),
+                13 - 3, 108 - 24, 78, -1
+        );
+        poseStack.popPose();
+
+        // Skill 2
         int costMultiplier1 = MEMechanicUtil.getSkillIndex(1, magicPlayer).getExpenseMultiplier();
         int cost1 = ((MEMechanicUtil.getLevelOfSkill(1, magicPlayer) + 1) * 3) * costMultiplier1;
 
         GuiComponent.drawCenteredString(poseStack, minecraft.font,
-                new TranslatableComponent("cost2", cost1),
+                new TranslatableComponent(skillCostKey, cost1),
                 137, 18, -12829636
         );
+
+        poseStack.pushPose();
+        poseStack.scale(descScale, descScale, descScale);
+        this.minecraft.font.drawWordWrap(
+                new TranslatableComponent(MEMechanicUtil.getSkillIndex(1, magicPlayer).getDescriptionKey()),
+                114 - 12, 108 - 24, 78, -1
+        );
+        poseStack.popPose();
 
         int costMultiplier2 = MEMechanicUtil.getSkillIndex(2, magicPlayer).getExpenseMultiplier();
         int cost2 = ((MEMechanicUtil.getLevelOfSkill(2, magicPlayer) + 1) * 3) * costMultiplier2;
 
         GuiComponent.drawCenteredString(poseStack, minecraft.font,
-                new TranslatableComponent("cost3", cost2),
+                new TranslatableComponent(skillCostKey, cost2),
                 234, 18, -12829636
         );
 
+        poseStack.pushPose();
+        poseStack.scale(descScale, descScale, descScale);
+        this.minecraft.font.drawWordWrap(
+                new TranslatableComponent(MEMechanicUtil.getSkillIndex(2, magicPlayer).getDescriptionKey()),
+                211 - 12, 108 - 24, 78, -1
+        );
+        poseStack.popPose();
     }
 
     @Override
@@ -169,7 +196,7 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
                 if (player.experienceLevel < cost) {
                     player.closeContainer();
                     mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.WITHER_BREAK_BLOCK, 1.0F));
-                    player.displayClientMessage(new TranslatableComponent("You don't have enough Experience Points to level up this skill!").withStyle(ChatFormatting.RED), false);
+                    player.displayClientMessage(new TranslatableComponent("info." + Multielementals.MODID + ".element_menu.invalid_xp").withStyle(ChatFormatting.RED), false);
                 } else {
                     int val = MEMechanicUtil.getLevelOfSkill(skillIndex, magicPlayer);
                     int xpChange = -(cost * 25);

@@ -1,0 +1,11 @@
+{
+  "info.multielementals.element_menu" : "Multielementals: Element Menu",
+  "info.multielementals.element_menu.invalid_xp" : "You're experience amount is too low to upgrade this skill!",
+  "info.multielementals.element_menu.skill_cost" : "Cost: %s",
+
+  "skill.multielementals.flaming_leap" : "Flaming Leap",
+  "skill.multielementals.flaming_leap.desc" : "...",
+
+  "skill.multielementals.lightning_wage" : "Lightning Wage",
+  "skill.multielementals.lightning_wage.desc" : "After at least 2 seconds of holding the skill, this ability summons lightning bolts with amounts and damages that scales with the skill's level, and the caster gets a speed boost."
+}
