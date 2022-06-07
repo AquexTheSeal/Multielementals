@@ -9,11 +9,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = Multielementals.MODID)
+@Mod.EventBusSubscriber(modid = Multielementals.MODID, value = Dist.CLIENT)
 public class OverlayEvents {
 
     @SubscribeEvent

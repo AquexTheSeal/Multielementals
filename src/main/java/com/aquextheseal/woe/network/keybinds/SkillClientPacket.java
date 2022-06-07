@@ -41,18 +41,18 @@ public class SkillClientPacket {
     public static void execute(SkillClientPacket message, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
-            LocalPlayer player = Minecraft.getInstance().player;
-            ClientLevel world = Minecraft.getInstance().level;
-            int index = Mth.clamp(message.index, 0, 2);
-            MagicSkill skill = MEMechanicUtil.getMagicElementWithString(message.elementReg).skillsList().get(index);
+                LocalPlayer player = Minecraft.getInstance().player;
+                ClientLevel world = Minecraft.getInstance().level;
+                int index = Mth.clamp(message.index, 0, 2);
+                MagicSkill skill = MEMechanicUtil.getMagicElementWithString(message.elementReg).skillsList().get(index);
 
-            if (!message.onRelease) {
-                skill.onExecution(player, world);
-            } else {
-                if (skill instanceof HoldableMagicSkill holdableSkill) {
-                    holdableSkill.onRelease(player, world);
+                if (!message.onRelease) {
+                    skill.onExecution(player, world);
+                } else {
+                    if (skill instanceof HoldableMagicSkill holdableSkill) {
+                        holdableSkill.onRelease(player, world);
+                    }
                 }
-            }
         });
         context.setPacketHandled(true);
     }

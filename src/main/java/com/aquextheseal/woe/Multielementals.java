@@ -38,8 +38,7 @@ public class Multielementals
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void setup(final FMLCommonSetupEvent event)
-    {
+    private void setup(final FMLCommonSetupEvent event) {
         MENetwork.initializeNetwork();
     }
 
