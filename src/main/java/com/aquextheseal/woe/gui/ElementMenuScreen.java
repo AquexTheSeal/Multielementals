@@ -15,15 +15,20 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.HashMap;
 
+@OnlyIn(Dist.CLIENT)
 public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContainer> {
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Multielementals.MODID, "textures/gui/element_menu.png");
     private static final ResourceLocation UPGRADE_BUTTON_LOCATION = new ResourceLocation(Multielementals.MODID, "textures/gui/element_upgrade.png");
@@ -70,7 +75,7 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
             blit(ms, this.leftPos + 125, this.topPos + 48, 0, 0, 32, 32, 32, 32);
 
             RenderSystem.setShaderTexture(0, magicPlayer.getMagicElement().getThirdSkill().getSkillIcon());
-            blit(ms, this.leftPos + 225, this.topPos + 48, 0, 0, 32, 32, 32, 32);
+            blit(ms, this.leftPos + 221, this.topPos + 48, 0, 0, 32, 32, 32, 32);
 
             RenderSystem.disableBlend();
         }
@@ -95,7 +100,7 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
         LocalPlayer player = minecraft.player;
         MagicPlayer magicPlayer = (MagicPlayer) player;
         String skillCostKey = "info." + Multielementals.MODID + ".element_menu.skill_cost";
-        float descScale = 0.5F;
+        float descScale = 0.75F;
 
         GuiComponent.drawCenteredString(poseStack, minecraft.font, new TranslatableComponent("info." + Multielementals.MODID + ".element_menu"), 141, 6, -12829636);
 
@@ -110,9 +115,9 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
 
         poseStack.pushPose();
         poseStack.scale(descScale, descScale, descScale);
-        this.minecraft.font.drawWordWrap(
+        drawWordWrap(poseStack,
                 new TranslatableComponent(MEMechanicUtil.getSkillIndex(0, magicPlayer).getDescriptionKey()),
-                13 - 3, 108 - 24, 78, -1
+                7 + 8, 85 + 30, 98, -1
         );
         poseStack.popPose();
 
@@ -127,9 +132,9 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
 
         poseStack.pushPose();
         poseStack.scale(descScale, descScale, descScale);
-        this.minecraft.font.drawWordWrap(
+        drawWordWrap(poseStack,
                 new TranslatableComponent(MEMechanicUtil.getSkillIndex(1, magicPlayer).getDescriptionKey()),
-                114 - 12, 108 - 24, 78, -1
+                105 + 33, 85 + 30, 98, -1
         );
         poseStack.popPose();
 
@@ -143,11 +148,18 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
 
         poseStack.pushPose();
         poseStack.scale(descScale, descScale, descScale);
-        this.minecraft.font.drawWordWrap(
+        drawWordWrap(poseStack,
                 new TranslatableComponent(MEMechanicUtil.getSkillIndex(2, magicPlayer).getDescriptionKey()),
-                211 - 12, 108 - 24, 78, -1
+                194 + 55 + 18, 85 + 30, 98, -1
         );
         poseStack.popPose();
+    }
+
+    public void drawWordWrap(PoseStack stack, FormattedText pText, int pX, int pY, int pMaxWidth, int pColor) {
+        for(FormattedCharSequence formattedcharsequence : minecraft.font.split(pText, pMaxWidth)) {
+            GuiComponent.drawString(stack, minecraft.font, formattedcharsequence, pX, pY, pColor);
+            pY += 9;
+        }
     }
 
     @Override
@@ -161,13 +173,13 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
         super.init();
         this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
-        this.addRenderableWidget(new ElementUpgradeButton(0, this.leftPos + 7, this.topPos + 29, 61, 18, 0, 0, 19, UPGRADE_BUTTON_LOCATION, 256, 256,
+        this.addRenderableWidget(new ElementUpgradeButton(0, this.leftPos + 10, this.topPos + 29, 61, 18, 0, 0, 19, UPGRADE_BUTTON_LOCATION, 256, 256,
                 (e) -> {
         }));
-        this.addRenderableWidget(new ElementUpgradeButton(1, this.leftPos + 106, this.topPos + 29, 61, 18, 0, 0, 19, UPGRADE_BUTTON_LOCATION, 256, 256,
+        this.addRenderableWidget(new ElementUpgradeButton(1, this.leftPos + 109, this.topPos + 29, 61, 18, 0, 0, 19, UPGRADE_BUTTON_LOCATION, 256, 256,
                 (e) -> {
         }));
-        this.addRenderableWidget(new ElementUpgradeButton(2, this.leftPos + 205, this.topPos + 29, 61, 18, 0, 0, 19, UPGRADE_BUTTON_LOCATION, 256, 256,
+        this.addRenderableWidget(new ElementUpgradeButton(2, this.leftPos + 204, this.topPos + 29, 61, 18, 0, 0, 19, UPGRADE_BUTTON_LOCATION, 256, 256,
                 (e) -> {
         }));
     }
