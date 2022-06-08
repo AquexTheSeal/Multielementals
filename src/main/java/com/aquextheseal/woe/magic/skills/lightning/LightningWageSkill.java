@@ -3,6 +3,7 @@ package com.aquextheseal.woe.magic.skills.lightning;
 import com.aquextheseal.woe.Multielementals;
 import com.aquextheseal.woe.magic.skilldata.HoldableMagicSkill;
 import com.aquextheseal.woe.registry.MEMagicElements;
+import com.aquextheseal.woe.util.MEAbilityUtil;
 import com.aquextheseal.woe.util.MEDataUtil;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,15 +13,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 
 public class LightningWageSkill extends HoldableMagicSkill {
-
-    public static boolean holdOn;
-    public static int skillTimer;
 
     public LightningWageSkill(String registryName) {
         super(registryName, MEMagicElements.LIGHTNING);
@@ -34,6 +34,7 @@ public class LightningWageSkill extends HoldableMagicSkill {
     @Override
     public void onExecution(Player caster, Level world) {
         caster.getPersistentData().putBoolean(getRegistryName() + "holdingOn", true);
+        caster.getPersistentData().putBoolean(getRegistryName() + "isIncomplete", false);
         caster.playSound(SoundEvents.BEACON_ACTIVATE, 1.0F, 2.5F);
     }
 
@@ -42,37 +43,27 @@ public class LightningWageSkill extends HoldableMagicSkill {
         if (caster.getPersistentData().getInt(getRegistryName() + "skillTimer") >= 40) {
             double d0 = -Mth.sin(caster.getYRot() * ((float)Math.PI / 180F));
             double d1 = Mth.cos(caster.getYRot() * ((float)Math.PI / 180F));
-            addBolt(caster, world, d0 * 6, d1 * 6);
-
-            if (getLevel((MagicPlayer) caster) >= 15) {
-                addBolt(caster, world, -(d0 * 6), -(d1 * 6));
+            Entity tracedEntity = MEAbilityUtil.getRayTracedEntity(caster, 8 + (getLevel((MagicPlayer) caster) / 8D));
+            if (tracedEntity == null) {
+                addBolt(caster, world, caster.getX() + d0 * 6, caster.getY(), caster.getZ() + d1 * 6);
+            } else {
+                addBolt(caster, world, tracedEntity.getX(), tracedEntity.getY(), tracedEntity.getZ());
             }
-            if (getLevel((MagicPlayer) caster) >= 35) {
-                addBolt(caster, world, d0 * 6, -(d1 * 6));
-                addBolt(caster, world, -(d0 * 6), d1 * 6);
-            }
-            caster.addEffect(
-                    new MobEffectInstance(MobEffects.MOVEMENT_SPEED,
-                            60 + (getLevel((MagicPlayer) caster) / 2),
-                            1 + (getLevel((MagicPlayer) caster) / 20),
-                            false, false, false)
-            );
-            if (world instanceof ServerLevel server) {
-                server.sendParticles(
-                        ParticleTypes.CAMPFIRE_COSY_SMOKE, caster.getX(), caster.getY() + 0.75D, caster.getZ(),
-                        10, 0.75F, 0.75F, 0.75F, 0.01
-                );
-            }
+        } else {
+            caster.getPersistentData().putBoolean(getRegistryName() + "isIncomplete", true);
         }
 
         caster.getPersistentData().putInt(getRegistryName() + "skillTimer", 0);
         caster.getPersistentData().putBoolean(getRegistryName() + "holdingOn", false);
     }
 
-    public void addBolt(Player caster, Level world, double xOff, double zOff) {
+    public void addBolt(Player caster, Level world, double x, double y, double z) {
+        if (getLevel((MagicPlayer) caster) >= 40) {
+            world.explode(caster, x, y, z, getLevel((MagicPlayer) caster) / 25F, Explosion.BlockInteraction.BREAK);
+        }
         LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(world);
         bolt.setDamage((float) getLevel((MagicPlayer) caster) / 4);
-        bolt.moveTo(caster.getX() + xOff, caster.getY(), caster.getZ() + zOff);
+        bolt.moveTo(x, y, z);
         world.addFreshEntity(bolt);
     }
 
@@ -94,7 +85,7 @@ public class LightningWageSkill extends HoldableMagicSkill {
                 caster.playSound(SoundEvents.AXE_SCRAPE, 0.75F, 3.4F);
                 if (world instanceof ServerLevel server) {
                     server.sendParticles(
-                            ParticleTypes.POOF, caster.getX(), caster.getY() + 0.75D, caster.getZ(),
+                            ParticleTypes.CRIT, caster.getX(), caster.getY() + 0.75D, caster.getZ(),
                             25, 0.75F, 0.75F, 0.75F, -0.01
                     );
                 }
@@ -112,11 +103,13 @@ public class LightningWageSkill extends HoldableMagicSkill {
 
     @Override
     public int getMaxCooldown(Player caster) {
-        return 500 - Mth.clamp((caster.experienceLevel / 2), 0, 150);
+        return
+                caster.getPersistentData().getBoolean(getRegistryName() + "isIncomplete") ?
+                        60 : 500 - Mth.clamp((caster.experienceLevel / 2), 0, 150);
     }
 
     @Override
     public boolean shouldStopActionWhen(Player player) {
-        return skillTimer == 0;
+        return !player.getPersistentData().getBoolean(getRegistryName() + "holdingOn");
     }
 }

@@ -2,7 +2,7 @@ package com.aquextheseal.woe.network.keybinds;
 
 import com.aquextheseal.woe.magic.skilldata.HoldableMagicSkill;
 import com.aquextheseal.woe.magic.skilldata.MagicSkill;
-import com.aquextheseal.woe.util.MEMechanicUtil;
+import com.aquextheseal.woe.util.MESystemUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -44,7 +44,7 @@ public class SkillClientPacket {
                 LocalPlayer player = Minecraft.getInstance().player;
                 ClientLevel world = Minecraft.getInstance().level;
                 int index = Mth.clamp(message.index, 0, 2);
-                MagicSkill skill = MEMechanicUtil.getMagicElementWithString(message.elementReg).skillsList().get(index);
+                MagicSkill skill = MESystemUtil.getMagicElementWithString(message.elementReg).skillsList().get(index);
 
                 if (!message.onRelease) {
                     skill.onExecution(player, world);

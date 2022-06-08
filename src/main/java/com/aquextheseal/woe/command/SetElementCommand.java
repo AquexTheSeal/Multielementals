@@ -2,7 +2,7 @@ package com.aquextheseal.woe.command;
 
 import com.aquextheseal.woe.magic.MagicElement;
 import com.aquextheseal.woe.registry.MEMagicElements;
-import com.aquextheseal.woe.util.MEMechanicUtil;
+import com.aquextheseal.woe.util.MESystemUtil;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -25,7 +25,7 @@ public class SetElementCommand {
 
         if (player instanceof MagicPlayer magicPlayer) {
             if (magicPlayer.getMagicElement() == null) {
-                magicPlayer.setMagicElement(MEMechanicUtil.getMagicElementWithString(element));
+                magicPlayer.setMagicElement(MESystemUtil.getMagicElementWithString(element));
                 source.sendSuccess(new TranslatableComponent("Set Skill to be " + capitalizedSpaced(element)), true);
             } else {
                 source.sendFailure(new TranslatableComponent("You cannot change your skill if you already have one!"));

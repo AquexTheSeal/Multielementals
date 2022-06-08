@@ -1,6 +1,6 @@
 package com.aquextheseal.woe.network.elementdata;
 
-import com.aquextheseal.woe.util.MEMechanicUtil;
+import com.aquextheseal.woe.util.MESystemUtil;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
@@ -43,7 +43,7 @@ public class SetSkillLevelPacket {
             Level world = player.getCommandSenderWorld();
 
             if (player instanceof MagicPlayer magicPlayer) {
-                MEMechanicUtil.setSkillLevelOfIndex(message.index, message.value, magicPlayer);
+                MESystemUtil.setSkillLevelOfIndex(message.index, message.value, magicPlayer);
                 player.giveExperiencePoints(message.xpChange);
 
                 if (world instanceof ServerLevel server) {

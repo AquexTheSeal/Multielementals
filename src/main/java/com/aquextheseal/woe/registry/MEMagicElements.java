@@ -14,6 +14,9 @@ public class MEMagicElements {
     public static final MagicElement FIRE = register("fire", new FireElement());
     public static final MagicElement ICE = register("ice", new IceElement());
     public static final MagicElement LIGHTNING = register("lightning", new LightningElement());
+    public static final MagicElement AIR = register("air", new LightningElement());
+    public static final MagicElement EARTH = register("earth", new LightningElement());
+    public static final MagicElement WATER = register("water", new LightningElement());
 
     public static MagicElement register(String name, MagicElement element) {
         MAGIC_ELEMENTS.put(name, element);

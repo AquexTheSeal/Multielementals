@@ -1,7 +1,7 @@
 package com.aquextheseal.woe.mixin;
 
 import com.aquextheseal.woe.magic.MagicElement;
-import com.aquextheseal.woe.util.MEMechanicUtil;
+import com.aquextheseal.woe.util.MESystemUtil;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -37,7 +37,7 @@ public abstract class PlayerMixin extends LivingEntity implements MagicPlayer {
     @Override
     @Nullable
     public MagicElement getMagicElement() {
-        return MEMechanicUtil.getMagicElementWithString(this.entityData.get(ELEMENT));
+        return MESystemUtil.getMagicElementWithString(this.entityData.get(ELEMENT));
     }
 
     @Override
@@ -79,14 +79,21 @@ public abstract class PlayerMixin extends LivingEntity implements MagicPlayer {
         MagicElement element = getMagicElement();
         if (element != null) {
             pCompound.putString("magicElement", element.getElementRegistryName());
+
+            pCompound.putInt("fsLvl", getFirstSkillLevel());
+            pCompound.putInt("ssLvl", getSecondSkillLevel());
+            pCompound.putInt("tsLvl", getThirdSkillLevel());
         }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     public void loadData(CompoundTag pCompound, CallbackInfo ci) {
-        MagicElement byItElement = MEMechanicUtil.getMagicElementWithString(pCompound.getString("magicElement"));
+        MagicElement byItElement = MESystemUtil.getMagicElementWithString(pCompound.getString("magicElement"));
         if (byItElement != null) {
             setMagicElement(byItElement);
+            setFirstSkillLevel(pCompound.getInt("fsLvl"));
+            setSecondSkillLevel(pCompound.getInt("ssLvl"));
+            setThirdSkillLevel(pCompound.getInt("tsLvl"));
         }
     }
 

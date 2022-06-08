@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
  * Utility class to easily access my stupid dumb spaghetti code
  * - Aqu.
  */
-public class MEMechanicUtil {
+public class MESystemUtil {
 
     @Nullable
     public static MagicElement getMagicElementWithString(String string) {

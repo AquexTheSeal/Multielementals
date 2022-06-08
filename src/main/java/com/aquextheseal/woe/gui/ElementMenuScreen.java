@@ -3,7 +3,7 @@ package com.aquextheseal.woe.gui;
 import com.aquextheseal.woe.Multielementals;
 import com.aquextheseal.woe.network.MENetwork;
 import com.aquextheseal.woe.network.elementdata.SetSkillLevelPacket;
-import com.aquextheseal.woe.util.MEMechanicUtil;
+import com.aquextheseal.woe.util.MESystemUtil;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -105,8 +105,8 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
         GuiComponent.drawCenteredString(poseStack, minecraft.font, new TranslatableComponent("info." + Multielementals.MODID + ".element_menu"), 141, 6, -12829636);
 
         // Skill 1
-        int costMultiplier = MEMechanicUtil.getSkillIndex(0, magicPlayer).getExpenseMultiplier();
-        int cost = ((MEMechanicUtil.getLevelOfSkill(0, magicPlayer) + 1) * 3) * costMultiplier;
+        int costMultiplier = MESystemUtil.getSkillIndex(0, magicPlayer).getExpenseMultiplier();
+        int cost = ((MESystemUtil.getLevelOfSkill(0, magicPlayer) + 1) * 3) * costMultiplier;
 
         GuiComponent.drawCenteredString(poseStack, minecraft.font,
                 new TranslatableComponent(skillCostKey, cost),
@@ -116,14 +116,14 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
         poseStack.pushPose();
         poseStack.scale(descScale, descScale, descScale);
         drawWordWrap(poseStack,
-                new TranslatableComponent(MEMechanicUtil.getSkillIndex(0, magicPlayer).getDescriptionKey()),
+                new TranslatableComponent(MESystemUtil.getSkillIndex(0, magicPlayer).getDescriptionKey()),
                 7 + 8, 85 + 30, 98, -1
         );
         poseStack.popPose();
 
         // Skill 2
-        int costMultiplier1 = MEMechanicUtil.getSkillIndex(1, magicPlayer).getExpenseMultiplier();
-        int cost1 = ((MEMechanicUtil.getLevelOfSkill(1, magicPlayer) + 1) * 3) * costMultiplier1;
+        int costMultiplier1 = MESystemUtil.getSkillIndex(1, magicPlayer).getExpenseMultiplier();
+        int cost1 = ((MESystemUtil.getLevelOfSkill(1, magicPlayer) + 1) * 3) * costMultiplier1;
 
         GuiComponent.drawCenteredString(poseStack, minecraft.font,
                 new TranslatableComponent(skillCostKey, cost1),
@@ -133,13 +133,13 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
         poseStack.pushPose();
         poseStack.scale(descScale, descScale, descScale);
         drawWordWrap(poseStack,
-                new TranslatableComponent(MEMechanicUtil.getSkillIndex(1, magicPlayer).getDescriptionKey()),
+                new TranslatableComponent(MESystemUtil.getSkillIndex(1, magicPlayer).getDescriptionKey()),
                 105 + 33, 85 + 30, 98, -1
         );
         poseStack.popPose();
 
-        int costMultiplier2 = MEMechanicUtil.getSkillIndex(2, magicPlayer).getExpenseMultiplier();
-        int cost2 = ((MEMechanicUtil.getLevelOfSkill(2, magicPlayer) + 1) * 3) * costMultiplier2;
+        int costMultiplier2 = MESystemUtil.getSkillIndex(2, magicPlayer).getExpenseMultiplier();
+        int cost2 = ((MESystemUtil.getLevelOfSkill(2, magicPlayer) + 1) * 3) * costMultiplier2;
 
         GuiComponent.drawCenteredString(poseStack, minecraft.font,
                 new TranslatableComponent(skillCostKey, cost2),
@@ -149,7 +149,7 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
         poseStack.pushPose();
         poseStack.scale(descScale, descScale, descScale);
         drawWordWrap(poseStack,
-                new TranslatableComponent(MEMechanicUtil.getSkillIndex(2, magicPlayer).getDescriptionKey()),
+                new TranslatableComponent(MESystemUtil.getSkillIndex(2, magicPlayer).getDescriptionKey()),
                 194 + 55 + 18, 85 + 30, 98, -1
         );
         poseStack.popPose();
@@ -190,8 +190,8 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
         MagicPlayer magicPlayer = (MagicPlayer) player;
-        public int costMultiplier = MEMechanicUtil.getSkillIndex(skillIndex, magicPlayer).getExpenseMultiplier();
-        public int cost = ((MEMechanicUtil.getLevelOfSkill(skillIndex, magicPlayer) + 1) * 3) * costMultiplier;
+        public int costMultiplier = MESystemUtil.getSkillIndex(skillIndex, magicPlayer).getExpenseMultiplier();
+        public int cost = ((MESystemUtil.getLevelOfSkill(skillIndex, magicPlayer) + 1) * 3) * costMultiplier;
 
         public ElementUpgradeButton(int skillIndex, int pX, int pY, int pWidth, int pHeight, int pXTexStart, int pYTexStart, int pYDiffTex, ResourceLocation pResourceLocation, int pTextureWidth, int pTextureHeight, OnPress pOnPress) {
             super(pX, pY, pWidth, pHeight, pXTexStart, pYTexStart, pYDiffTex, pResourceLocation, pTextureWidth, pTextureHeight, pOnPress);
@@ -210,7 +210,7 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
                     mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.WITHER_BREAK_BLOCK, 1.0F));
                     player.displayClientMessage(new TranslatableComponent("info." + Multielementals.MODID + ".element_menu.invalid_xp").withStyle(ChatFormatting.RED), false);
                 } else {
-                    int val = MEMechanicUtil.getLevelOfSkill(skillIndex, magicPlayer);
+                    int val = MESystemUtil.getLevelOfSkill(skillIndex, magicPlayer);
                     int xpChange = -(cost * 25);
 
                     mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.PLAYER_LEVELUP, 1.75F));

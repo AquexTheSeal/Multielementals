@@ -14,6 +14,7 @@ public class CommandHandler {
     public static void onCommandsRegister(RegisterCommandsEvent event) {
         new SetElementCommand(event.getDispatcher());
         new ClearElementCommand(event.getDispatcher());
+        new SetSkillLevelCommand(event.getDispatcher());
         ConfigCommand.register(event.getDispatcher());
     }
 
