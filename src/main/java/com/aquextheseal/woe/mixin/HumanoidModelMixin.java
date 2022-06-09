@@ -28,15 +28,15 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
 
     @Shadow @Final public ModelPart rightLeg;
 
-    @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V",
-            at = @At(value = "FIELD", target = "Lnet/minecraft/client/model/HumanoidModel;riding:Z", shift = At.Shift.BEFORE)
-    )
-    private void testMixin(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, CallbackInfo ci) {
+    @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At(value = "TAIL"))
+    private void setupSkillAnimations(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, CallbackInfo ci) {
 
         if (pEntity instanceof Player player && pEntity instanceof MagicPlayer magicPlayer) {
             if (magicPlayer.getMagicElement() != null) {
                 if (magicPlayer.getMagicElement().getFirstSkill() instanceof LightningWageSkill) {
-                    if (magicPlayer.getMagicElement().getFirstSkill().shouldStopActionWhen(player)) {
+                    if (!magicPlayer.getMagicElement().getFirstSkill().shouldStopActionWhen(player)) {
+                        leftArm.xRot = -2.25F;
+                        rightArm.xRot = -2.30F;
                     }
                 }
             }

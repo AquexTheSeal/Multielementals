@@ -24,7 +24,7 @@ public abstract class MagicSkill {
         return registryName;
     }
 
-    public abstract ResourceLocation getSkillIcon();
+    public abstract ResourceLocation getSkillIcon(Player caster);
 
     public abstract void onExecution(Player caster, Level world);
 

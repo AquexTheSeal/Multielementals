@@ -48,7 +48,7 @@ public class OverlayEvents {
                     RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 
                     RenderSystem.setShaderColor(rgb, rgb, rgb + 0.05F, 1);
-                    RenderSystem.setShaderTexture(0, magic.getFirstSkill().getSkillIcon());
+                    RenderSystem.setShaderTexture(0, magic.getFirstSkill().getSkillIcon(entity));
                     GuiComponent.blit(event.getMatrixStack(), w - 36, posY + -76, 0, 0, 32, 32, 32, 32);
                     GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, "" + magic.getFirstSkill().getLevel(magicPlayer), w - 20, posY + -50, -1);
 
@@ -58,7 +58,7 @@ public class OverlayEvents {
 
                     // Second Skill
                     RenderSystem.setShaderColor(rgb2, rgb2, rgb2 + 0.05F, 1);
-                    RenderSystem.setShaderTexture(0, magic.getSecondSkill().getSkillIcon());
+                    RenderSystem.setShaderTexture(0, magic.getSecondSkill().getSkillIcon(entity));
                     GuiComponent.blit(event.getMatrixStack(), w - 36, posY + -36, 0, 0, 32, 32, 32, 32);
                     GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, "" + magic.getSecondSkill().getLevel(magicPlayer), w - 20, posY + -10, -1);
 
@@ -68,7 +68,7 @@ public class OverlayEvents {
 
                     // Third Skill
                     RenderSystem.setShaderColor(rgb3, rgb3, rgb3 + 0.05F, 1);
-                    RenderSystem.setShaderTexture(0, magic.getThirdSkill().getSkillIcon());
+                    RenderSystem.setShaderTexture(0, magic.getThirdSkill().getSkillIcon(entity));
                     GuiComponent.blit(event.getMatrixStack(), w - 36, posY + 4, 0, 0, 32, 32, 32, 32);
                     GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, "" + magic.getThirdSkill().getLevel(magicPlayer), w - 20, posY + 30, -1);
 

@@ -26,7 +26,7 @@ public class SpecialRenderEvents {
             if (magicPlayer.getMagicElement() != null) {
                 if (magicPlayer.getMagicElement().getFirstSkill() instanceof LightningWageSkill) {
                     if (!magicPlayer.getMagicElement().getFirstSkill().shouldStopActionWhen(event.getPlayer())) {
-                        lwRotVal += 0.05F;
+                        lwRotVal += 0.03F;
                         if (lwRotVal >= 360) {
                             lwRotVal = 0;
                         }
@@ -49,7 +49,7 @@ public class SpecialRenderEvents {
                 if (magicPlayer.getMagicElement() != null) {
                     if (magicPlayer.getMagicElement().getFirstSkill() instanceof LightningWageSkill) {
                         if (!magicPlayer.getMagicElement().getFirstSkill().shouldStopActionWhen(Minecraft.getInstance().player)) {
-                            lwHandRotVal += lwHandRotVal <= 0.30F ? ((0.15 - lwHandRotVal) / 8) / 2 : 0;
+                            lwHandRotVal += lwHandRotVal <= 0.50F ? ((0.15 - lwHandRotVal) / 8) / 2 : 0;
                             event.getPoseStack().mulPose(Vector3f.XP.rotation(lwHandRotVal));
                             event.getPoseStack().translate(0, lwHandRotVal, 0);
                         } else {

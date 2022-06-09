@@ -68,13 +68,13 @@ public class ElementMenuScreen extends AbstractContainerScreen<ElementMenuContai
             RenderSystem.setShaderTexture(0, GUI_TEXTURE);
             blit(ms, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 
-            RenderSystem.setShaderTexture(0, magicPlayer.getMagicElement().getFirstSkill().getSkillIcon());
+            RenderSystem.setShaderTexture(0, magicPlayer.getMagicElement().getFirstSkill().getSkillIcon(player));
             blit(ms, this.leftPos + 25, this.topPos + 48, 0, 0, 32, 32, 32, 32);
 
-            RenderSystem.setShaderTexture(0, magicPlayer.getMagicElement().getSecondSkill().getSkillIcon());
+            RenderSystem.setShaderTexture(0, magicPlayer.getMagicElement().getSecondSkill().getSkillIcon(player));
             blit(ms, this.leftPos + 125, this.topPos + 48, 0, 0, 32, 32, 32, 32);
 
-            RenderSystem.setShaderTexture(0, magicPlayer.getMagicElement().getThirdSkill().getSkillIcon());
+            RenderSystem.setShaderTexture(0, magicPlayer.getMagicElement().getThirdSkill().getSkillIcon(player));
             blit(ms, this.leftPos + 221, this.topPos + 48, 0, 0, 32, 32, 32, 32);
 
             RenderSystem.disableBlend();

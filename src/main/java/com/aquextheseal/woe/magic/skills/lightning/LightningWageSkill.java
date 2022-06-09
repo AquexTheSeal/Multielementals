@@ -27,7 +27,7 @@ public class LightningWageSkill extends HoldableMagicSkill {
     }
 
     @Override
-    public ResourceLocation getSkillIcon() {
+    public ResourceLocation getSkillIcon(Player caster) {
         return new ResourceLocation(Multielementals.MODID, "textures/gui/skills/lightning_wage.png");
     }
 

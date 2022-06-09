@@ -22,7 +22,7 @@ public class FlamingLeapSkill extends MagicSkill {
     }
 
     @Override
-    public ResourceLocation getSkillIcon() {
+    public ResourceLocation getSkillIcon(Player caster) {
         return new ResourceLocation(Multielementals.MODID, "textures/gui/skills/flaming_leap.png");
     }
 

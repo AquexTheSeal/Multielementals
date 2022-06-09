@@ -21,7 +21,7 @@ public class EarthquakeSkill extends MagicSkill {
     }
 
     @Override
-    public ResourceLocation getSkillIcon() {
+    public ResourceLocation getSkillIcon(Player caster) {
         return new ResourceLocation(Multielementals.MODID, "textures/gui/skills/earthquake.png");
     }
 
