@@ -5,6 +5,7 @@ import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Final;
@@ -35,8 +36,8 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
             if (magicPlayer.getMagicElement() != null) {
                 if (magicPlayer.getMagicElement().getFirstSkill() instanceof LightningWageSkill) {
                     if (!magicPlayer.getMagicElement().getFirstSkill().shouldStopActionWhen(player)) {
-                        leftArm.xRot = -2.25F;
-                        rightArm.xRot = -2.30F;
+                        leftArm.xRot = 2.25F - Mth.cos(pAgeInTicks * 0.055F) * 0.15F;
+                        rightArm.xRot = 2.30F - Mth.cos(pAgeInTicks * 0.055F) * 0.15F;
                     }
                 }
             }

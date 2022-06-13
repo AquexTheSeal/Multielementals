@@ -12,6 +12,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
 public class CrystalSparkCrystalModel<T extends Entity> extends EntityModel<T> {
@@ -60,6 +61,8 @@ public class CrystalSparkCrystalModel<T extends Entity> extends EntityModel<T> {
 		if (rotationValue <= -360) {
 			rotationValue = 0;
 		}
+		this.crystalCircle.zRot = Mth.cos(ageInTicks * 0.075F) * 0.1F;
+		this.crystalCircle.xRot = Mth.sin(ageInTicks * 0.075F) * 0.1F;
 	}
 
 	@Override

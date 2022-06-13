@@ -25,7 +25,11 @@ public class CrystalSparkSkill extends HoldableMagicSkill {
 
     @Override
     public ResourceLocation getSkillIcon(Player caster) {
-        return new ResourceLocation(Multielementals.MODID, "textures/gui/skills/crystal_spark.png");
+        if (caster.getPersistentData().getBoolean(getRegistryName() + "holdingOn")) {
+            return new ResourceLocation(Multielementals.MODID, "textures/gui/skills/crystal_spark_charging.png");
+        } else {
+            return new ResourceLocation(Multielementals.MODID, "textures/gui/skills/crystal_spark.png");
+        }
     }
 
     @Override
@@ -71,11 +75,16 @@ public class CrystalSparkSkill extends HoldableMagicSkill {
                     entity.knockback(1F, Mth.sin(caster.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(caster.getYRot() * ((float) Math.PI / 180F)));
                 }
             }
-            caster.playSound(SoundEvents.ELDER_GUARDIAN_CURSE, 0.75F, 3.5F);
+            caster.playSound(SoundEvents.ELDER_GUARDIAN_CURSE, 0.50F, 3.5F);
+            caster.playSound(SoundEvents.ANVIL_BREAK, 0.75F, 0.5F);
             if (world instanceof ServerLevel server) {
                 server.sendParticles(
-                        ParticleTypes.FIREWORK, caster.getX(), caster.getY() + 0.75D, caster.getZ(),
-                        75, 1F, 1F, 1F, 0.01
+                        ParticleTypes.FIREWORK, caster.getX(), caster.getY() - 0.15D, caster.getZ(),
+                        75, 1F, 0.5F, 1F, 0.01
+                );
+                server.sendParticles(
+                        ParticleTypes.ELECTRIC_SPARK, caster.getX(), caster.getY() - 0.15D, caster.getZ(),
+                        75, 1F, 0.5F, 1F, 0.01
                 );
             }
             caster.getPersistentData().putBoolean(shouldCharge, false);

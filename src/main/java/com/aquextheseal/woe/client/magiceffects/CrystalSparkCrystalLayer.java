@@ -21,6 +21,7 @@ public class CrystalSparkCrystalLayer<T extends LivingEntity, M extends EntityMo
     private static final ResourceLocation CRYSTAL_LOCATION = new ResourceLocation(Multielementals.MODID, "textures/entity/crystal_spark_crystal.png");
     private final CrystalSparkCrystalModel<T> crystalSparkCrystalModel;
     private float timer;
+    private float scaleTimer;
 
     public CrystalSparkCrystalLayer(RenderLayerParent<T, M> pRenderer, EntityModelSet entityModelSet) {
         super(pRenderer);
@@ -31,27 +32,33 @@ public class CrystalSparkCrystalLayer<T extends LivingEntity, M extends EntityMo
     public void render(PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight, T pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTicks, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         if (pLivingEntity instanceof Player player && pLivingEntity instanceof MagicPlayer magicPlayer) {
             if (magicPlayer.getMagicElement() != null) {
+                pMatrixStack.pushPose();
                 if (magicPlayer.getMagicElement().getSecondSkill() instanceof CrystalSparkSkill) {
                     if (!magicPlayer.getMagicElement().getSecondSkill().shouldStopActionWhen(player)) {
                         if (timer < 1.0F) {
-                            timer += 0.0625;
+                            timer += 0.0625 / 2;
                         }
                     } else {
-                        if (timer > 0) {
-                            timer -= 0.125;
+                        if (timer > 0.0F) {
+                            timer -= 0.125F / 2;
+                            if (scaleTimer < 1.0F) {
+                                scaleTimer += 0.125F / 2;
+                            }
+                            pMatrixStack.scale(1.0F + scaleTimer, 1.0F + scaleTimer, 1.0F + scaleTimer);
+                        } else {
+                            scaleTimer = 0.0F;
                         }
                     }
                 }
                 if (timer > 0) {
                     ResourceLocation resourcelocation = getCrystalTexture(pLivingEntity);
-                    pMatrixStack.pushPose();
                     pMatrixStack.translate(0.0D, 0.0D, 0.0D);
                     this.getParentModel().copyPropertiesTo(this.crystalSparkCrystalModel);
                     this.crystalSparkCrystalModel.setupAnim(pLivingEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-                    VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(pBuffer, RenderType.armorCutoutNoCull(resourcelocation), false, false);
-                    this.crystalSparkCrystalModel.renderToBuffer(pMatrixStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, timer);
-                    pMatrixStack.popPose();
+                    VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(pBuffer, RenderType.eyes(resourcelocation), false, false);
+                    this.crystalSparkCrystalModel.renderToBuffer(pMatrixStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY, timer, timer, timer, timer);
                 }
+                pMatrixStack.popPose();
             }
         }
     }
