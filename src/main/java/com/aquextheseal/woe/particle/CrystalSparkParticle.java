@@ -38,7 +38,7 @@ public class CrystalSparkParticle extends TextureSheetParticle {
     CrystalSparkParticle(ClientLevel pLevel, double pX, double pY, double pZ, double pQuadSizeMultiplier, SpriteSet pSprites) {
         super(pLevel, pX, pY, pZ, 0.0D, 0.0D, 0.0D);
         this.sprites = pSprites;
-        this.lifetime = 40;
+        this.lifetime = 30;
         float f = 1.0F;
         this.rCol = f;
         this.gCol = f;
@@ -53,7 +53,7 @@ public class CrystalSparkParticle extends TextureSheetParticle {
 
     public void tick() {
         if (alpha > 0.0F) {
-            alpha -= 0.05F;
+            alpha -= 0.025F;
         }
         if (quadSize < 5.0F) {
             this.quadSize += 0.25F / (quadSize * 0.75F);

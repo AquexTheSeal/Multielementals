@@ -1,5 +1,35 @@
 {
   "textures": [
-    "multielementals:crystal_spark"
+    "multielementals:crystal_spark_00",
+    "multielementals:crystal_spark_01",
+    "multielementals:crystal_spark_02",
+    "multielementals:crystal_spark_03",
+    "multielementals:crystal_spark_04",
+    "multielementals:crystal_spark_05",
+    "multielementals:crystal_spark_06",
+    "multielementals:crystal_spark_07",
+    "multielementals:crystal_spark_08",
+    "multielementals:crystal_spark_09",
+    "multielementals:crystal_spark_10",
+    "multielementals:crystal_spark_11",
+    "multielementals:crystal_spark_12",
+    "multielementals:crystal_spark_13",
+    "multielementals:crystal_spark_14",
+    "multielementals:crystal_spark_15",
+    "multielementals:crystal_spark_16",
+    "multielementals:crystal_spark_17",
+    "multielementals:crystal_spark_18",
+    "multielementals:crystal_spark_19",
+    "multielementals:crystal_spark_20",
+    "multielementals:crystal_spark_21",
+    "multielementals:crystal_spark_22",
+    "multielementals:crystal_spark_23",
+    "multielementals:crystal_spark_24",
+    "multielementals:crystal_spark_25",
+    "multielementals:crystal_spark_26",
+    "multielementals:crystal_spark_27",
+    "multielementals:crystal_spark_28",
+    "multielementals:crystal_spark_29",
+    "multielementals:crystal_spark_30"
   ]
 }
