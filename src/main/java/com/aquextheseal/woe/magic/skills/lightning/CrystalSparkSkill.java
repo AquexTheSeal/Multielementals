@@ -3,6 +3,7 @@ package com.aquextheseal.woe.magic.skills.lightning;
 import com.aquextheseal.woe.Multielementals;
 import com.aquextheseal.woe.magic.skilldata.HoldableMagicSkill;
 import com.aquextheseal.woe.registry.MEMagicElements;
+import com.aquextheseal.woe.registry.MEParticleTypes;
 import com.aquextheseal.woe.util.MEDataUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -46,6 +47,7 @@ public class CrystalSparkSkill extends HoldableMagicSkill {
             double dirY = Math.sin(Math.toRadians(0 - caster.getXRot()));
             double dirZ = Math.cos(Math.toRadians(caster.getYRot()));
             caster.setDeltaMovement(dirX * 3, dirY * 3, dirZ * 3);
+            caster.playSound(SoundEvents.SHULKER_SHOOT, 1.0F, 1.35F);
             caster.getPersistentData().putBoolean(shouldCharge, true);
             caster.getPersistentData().putInt(chargeTime, 20);
         } else {
@@ -77,13 +79,14 @@ public class CrystalSparkSkill extends HoldableMagicSkill {
             }
             caster.playSound(SoundEvents.ELDER_GUARDIAN_CURSE, 0.50F, 3.5F);
             caster.playSound(SoundEvents.ANVIL_BREAK, 0.75F, 0.5F);
+            world.addParticle(MEParticleTypes.CRYSTAL_SPARK.get(),  caster.getX(), caster.getY() + 0.4D, caster.getZ(), 0, 0, 0);
             if (world instanceof ServerLevel server) {
                 server.sendParticles(
-                        ParticleTypes.FIREWORK, caster.getX(), caster.getY() - 0.15D, caster.getZ(),
+                        ParticleTypes.FIREWORK, caster.getX(), caster.getY() + 0.15D, caster.getZ(),
                         75, 1F, 0.5F, 1F, 0.01
                 );
                 server.sendParticles(
-                        ParticleTypes.ELECTRIC_SPARK, caster.getX(), caster.getY() - 0.15D, caster.getZ(),
+                        ParticleTypes.ELECTRIC_SPARK, caster.getX(), caster.getY() + 0.15D, caster.getZ(),
                         75, 1F, 0.5F, 1F, 0.01
                 );
             }
