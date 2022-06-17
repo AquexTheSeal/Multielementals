@@ -1,0 +1,41 @@
+Element: Water
+Skill name: Healing Touch
+Skill use: Utility
+Skill base cooldown: 5 minutes
+Skill ability: Whenever someone is in water, you can use this ability to heal them to full health. This ability willl also give the player Regen 2 for 2 minutes.
+
+Element: Earth
+Skill name: Earthquake
+Skill use: Combat
+Skill cooldown: 5 minutes
+Skill ability: Deals 10 earth damage (bypassing armor) to everything in a 5x5 radius and blasts some blocks in the air (like tnt does, just for the funny looks)
+
+Element: Air
+Skill Name: Fog of Blindness
+Skill Use: Utility
+Skill Cooldown: 2 minutes
+Skill Ability: Creates fog in a 10 x 10 radius, players in the smoke will have their nametags hidden, and will have invisibility.
+               The fog lasts for a minute. Once it fades away, nametags will appear again and the invisibility will disappear.
+               Mobs can't attack players in the fog unless the player attacks the mobs first.
+
+Element: Earth
+Skill Name: Mountain Bud / Atlas Column
+Skill Use: Utility - Allows you to reach difficult places when exploring or building without harming the landscape
+           Combat - Gives you height superiority over your opponent.
+Skill Cooldown: 4 minutes?
+Skill Ability: Summons a dirt like blocks peak under your feet (4-5 blocks high, 5 blocks wide), moving all affected entities accordingly so they don't suffocate.
+               The slope would always be climbable using normal jumps to not brainfuck zombies too much, and the summoned blocks would disappear after about
+               30 seconds, leaving the terrain untouched.
+
+Element: Wind
+Skill name: Cloud Embrace
+Skill use: Both ig?
+Skill base cooldown: 30s
+Skill ability: Launches you into the sky, quite high (~10 blocks) and in the direction you're looking. You don't suffer fall damages while landing
+
+Element: Fire
+Skill Name: Wildfire
+Skill Cooldown: 3 minutes
+Skill Use: Comtility (Combat & Utility)
+Skill Ability: All mobs in a 6x6 radius will be set on fire, and by all mobs I mean all mobs (Combat). When used near wooden blocks,
+               they will also be set on fire. Can also be used to make mud into clay instantly (Utility).

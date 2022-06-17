@@ -5,6 +5,10 @@ import com.aquextheseal.woe.magic.skilldata.HoldableMagicSkill;
 import com.aquextheseal.woe.registry.MEMagicElements;
 import com.aquextheseal.woe.registry.MEParticleTypes;
 import com.aquextheseal.woe.util.MEDataUtil;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -42,7 +46,7 @@ public class CrystalSparkSkill extends HoldableMagicSkill {
 
     @Override
     public void onRelease(Player caster, Level world) {
-        if (caster.getPersistentData().getInt(getRegistryName() + "skillTimer") >= 40) {
+        if (caster.getPersistentData().getInt(getRegistryName() + "skillTimer") >= 20) {
             double dirX = Math.sin(Math.toRadians(caster.getYRot() + 180));
             double dirY = Math.sin(Math.toRadians(0 - caster.getXRot()));
             double dirZ = Math.cos(Math.toRadians(caster.getYRot()));
@@ -94,6 +98,36 @@ public class CrystalSparkSkill extends HoldableMagicSkill {
         }
         if (caster.getPersistentData().getInt(chargeTime) > 0) {
             MEDataUtil.addCompoundInt(caster, chargeTime, -1);
+        }
+    }
+
+    @Override
+    public <T extends LivingEntity> void setupSkillAnimation(Player player, HumanoidModel<T> model, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+        if (player.getPersistentData().getBoolean(getRegistryName() + "holdingOn")) {
+            model.body.xRot = Mth.sin(pAgeInTicks * 0.075F) * 0.15F + 0.35F;
+            model.rightArm.y = Mth.cos(pAgeInTicks * 0.025F) * 0.12F + 0.9F;
+            model.leftArm.y = Mth.cos(pAgeInTicks * 0.025F) * 0.09F + 0.85F;
+            model.leftArm.xRot = Mth.sin(pAgeInTicks * 0.075F) * 0.24F - 0.45F;
+            model.rightArm.xRot = Mth.sin(pAgeInTicks * 0.075F) * 0.22F - 0.5F;
+            model.leftLeg.xRot = Mth.cos(pAgeInTicks * 0.105F) * 0.12F + 0.45F;
+            model.rightLeg.xRot = Mth.cos(pAgeInTicks * 0.115F) * 0.18F + 0.95F;
+            model.rightLeg.z = Mth.cos(pAgeInTicks * 0.105F) * 0.12F - 6.05F;
+            model.rightLeg.y = Mth.cos(pAgeInTicks * 0.105F) * 0.12F + 0.15F;
+        }
+    }
+
+    @Override
+    public void setupSkillRotation(AbstractClientPlayer pEntityLiving, PoseStack pMatrixStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks) {
+        float rotval = pEntityLiving.getPersistentData().getFloat(getRegistryName() + "rotValue");
+
+        if (pEntityLiving.getPersistentData().getBoolean(getRegistryName() + "holdingOn")) {
+            MEDataUtil.addCompoundFloat(pEntityLiving, getRegistryName() + "rotValue", rotval <= 0.25F * 10 ? ((0.25F - rotval) / 4) / 2 : 0);
+            pMatrixStack.mulPose(Vector3f.XP.rotation(rotval));
+        } else pEntityLiving.getPersistentData().putFloat(getRegistryName() + "rotValue", 0);
+
+        if (pEntityLiving.getPersistentData().getInt(getRegistryName() + "chargeTimer") > 0) {
+            pMatrixStack.mulPose(Vector3f.XP.rotationDegrees(-90.0F - pEntityLiving.getXRot()));
+            pMatrixStack.translate(0.0D, -1.0D, 0.3D);
         }
     }
 

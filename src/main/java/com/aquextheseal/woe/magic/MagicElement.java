@@ -19,6 +19,4 @@ public abstract class MagicElement {
     public ImmutableList<MagicSkill> skillsList() {
         return ImmutableList.of(getFirstSkill(), getSecondSkill(), getThirdSkill());
     }
-
-
 }

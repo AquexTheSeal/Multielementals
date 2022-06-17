@@ -6,6 +6,10 @@ import com.aquextheseal.woe.registry.MEMagicElements;
 import com.aquextheseal.woe.util.MEAbilityUtil;
 import com.aquextheseal.woe.util.MEDataUtil;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -16,11 +20,14 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 
 public class LightningWageSkill extends HoldableMagicSkill {
+    //private float lwRotVal = 0;
+    //private float lwHandRotVal = 0;
 
     public LightningWageSkill(String registryName) {
         super(registryName, MEMagicElements.LIGHTNING);
@@ -94,6 +101,26 @@ public class LightningWageSkill extends HoldableMagicSkill {
 
             MEDataUtil.addCompoundInt(caster, getRegistryName() + "skillTimer", 1);
         }
+    }
+
+    @Override
+    public <T extends LivingEntity> void setupSkillAnimation(Player player, HumanoidModel<T> model, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+        if (player.getPersistentData().getBoolean(getRegistryName() + "holdingOn")) {
+            model.leftArm.zRot = Mth.cos(pAgeInTicks * 0.095F) * 0.35F - 2.10F;
+            model.rightArm.zRot = Mth.cos(pAgeInTicks * 0.095F) * -0.35F + 2.10F;
+        }
+    }
+
+    @Override
+    public void setupSkillRotation(AbstractClientPlayer pEntityLiving, PoseStack pMatrixStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks) {
+        float rotval = pEntityLiving.getPersistentData().getFloat(getRegistryName() + "rotValue");
+        if (pEntityLiving.getPersistentData().getBoolean("lightning_wage" + "holdingOn")) {
+            MEDataUtil.addCompoundFloat(pEntityLiving, getRegistryName() + "rotValue", 0.03F);
+            if (rotval >= 360) {
+                pEntityLiving.getPersistentData().putFloat(getRegistryName() + "rotValue", 0F);
+            }
+            pMatrixStack.mulPose(Vector3f.YP.rotation(rotval));
+        } else pEntityLiving.getPersistentData().putFloat(getRegistryName() + "rotValue", 0F);
     }
 
     @Override

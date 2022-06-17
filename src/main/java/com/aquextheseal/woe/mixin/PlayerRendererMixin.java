@@ -1,6 +1,9 @@
 package com.aquextheseal.woe.mixin;
 
 import com.aquextheseal.woe.client.magiceffects.CrystalSparkCrystalLayer;
+import com.aquextheseal.woe.magic.skilldata.MagicSkill;
+import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -22,5 +25,16 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
     @Inject(method = "<init>", at = @At("TAIL"))
     public void registerAccessories(EntityRendererProvider.Context pContext, boolean pUseSlimModel, CallbackInfo ci) {
         this.addLayer(new CrystalSparkCrystalLayer<>(this, pContext.getModelSet()));
+    }
+
+        @Inject(method = "setupRotations(Lnet/minecraft/client/player/AbstractClientPlayer;Lcom/mojang/blaze3d/vertex/PoseStack;FFF)V", at = @At(value = "TAIL"))
+    protected void setupRotations(AbstractClientPlayer pEntityLiving, PoseStack pMatrixStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks, CallbackInfo ci) {
+        if ( pEntityLiving instanceof MagicPlayer magicPlayer) {
+            if (magicPlayer.getMagicElement() != null) {
+                for (MagicSkill skill : magicPlayer.getMagicElement().skillsList()) {
+                    skill.setupSkillRotation(pEntityLiving, pMatrixStack, pAgeInTicks, pRotationYaw, pPartialTicks);
+                }
+            }
+        }
     }
 }

@@ -5,8 +5,12 @@ import com.aquextheseal.woe.magic.MagicElement;
 import com.aquextheseal.woe.network.MENetwork;
 import com.aquextheseal.woe.network.keybinds.SkillClientPacket;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -50,6 +54,12 @@ public abstract class MagicSkill {
     }
 
     public void baseSkillTick(Player caster, Level world) {
+    }
+
+    public <T extends LivingEntity> void setupSkillAnimation(Player player, HumanoidModel<T> model, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+    }
+
+    public void setupSkillRotation(AbstractClientPlayer pEntityLiving, PoseStack pMatrixStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks) {
     }
 
     public int getLevel(MagicPlayer magicPlayer) {

@@ -1,11 +1,10 @@
 package com.aquextheseal.woe.mixin;
 
-import com.aquextheseal.woe.magic.skills.lightning.LightningWageSkill;
+import com.aquextheseal.woe.magic.skilldata.MagicSkill;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Final;
@@ -34,13 +33,16 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
 
         if (pEntity instanceof Player player && pEntity instanceof MagicPlayer magicPlayer) {
             if (magicPlayer.getMagicElement() != null) {
-                if (magicPlayer.getMagicElement().getFirstSkill() instanceof LightningWageSkill) {
-                    if (!magicPlayer.getMagicElement().getFirstSkill().shouldStopActionWhen(player)) {
-                        leftArm.xRot = 2.25F - Mth.cos(pAgeInTicks * 0.055F) * 0.15F;
-                        rightArm.xRot = 2.30F - Mth.cos(pAgeInTicks * 0.055F) * 0.15F;
-                    }
+
+                for (MagicSkill skill : magicPlayer.getMagicElement().skillsList()) {
+                    skill.setupSkillAnimation(player, asHumanoidModel(this), pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
                 }
             }
         }
+    }
+
+    // Made this method because Java won't let me use "this" for cast.
+    HumanoidModel<T> asHumanoidModel(AgeableListModel<T> model) {
+        return (HumanoidModel<T>) model;
     }
 }
