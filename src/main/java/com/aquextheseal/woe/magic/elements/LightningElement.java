@@ -3,6 +3,7 @@ package com.aquextheseal.woe.magic.elements;
 import com.aquextheseal.woe.magic.MagicElement;
 import com.aquextheseal.woe.magic.skilldata.MagicSkill;
 import com.aquextheseal.woe.magic.skills.lightning.CrystalSparkSkill;
+import com.aquextheseal.woe.magic.skills.lightning.HandOfZeusSkill;
 import com.aquextheseal.woe.magic.skills.lightning.LightningWageSkill;
 
 public class LightningElement extends MagicElement {
@@ -24,6 +25,6 @@ public class LightningElement extends MagicElement {
 
     @Override
     public MagicSkill getThirdSkill() {
-        return new LightningWageSkill("lightning_wage_2");
+        return new HandOfZeusSkill("hand_of_zeus");
     }
 }

@@ -2,6 +2,7 @@ package com.aquextheseal.woe.registry;
 
 import com.aquextheseal.woe.Multielementals;
 import com.aquextheseal.woe.particle.CrystalSparkParticle;
+import com.aquextheseal.woe.particle.HandOfZeusParticle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleType;
@@ -19,11 +20,13 @@ public class MEParticleTypes {
     public static DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Multielementals.MODID);
 
     public static final RegistryObject<SimpleParticleType> CRYSTAL_SPARK = PARTICLES.register("crystal_spark", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> HAND_OF_ZEUS = PARTICLES.register("hand_of_zeus", () -> new SimpleParticleType(true));
 
     @SubscribeEvent
     public static void registerParticles(ParticleFactoryRegisterEvent event) {
         ParticleEngine engine = Minecraft.getInstance().particleEngine;
 
         engine.register(CRYSTAL_SPARK.get(), CrystalSparkParticle.Provider::new);
+        engine.register(HAND_OF_ZEUS.get(), HandOfZeusParticle.Provider::new);
     }
 }

@@ -11,6 +11,7 @@
   },
   "client": [
     "HumanoidModelMixin",
+    "MinecraftMixin",
     "PlayerRendererMixin",
     "accessor.ParticleAccessor",
     "accessor.SingleQuadParticleAccessor"

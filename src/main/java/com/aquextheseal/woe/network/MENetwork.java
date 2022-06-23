@@ -2,9 +2,11 @@ package com.aquextheseal.woe.network;
 
 import com.aquextheseal.woe.Multielementals;
 import com.aquextheseal.woe.network.elementdata.OpenElementMenuPacket;
+import com.aquextheseal.woe.network.elementdata.PauseGamePacket;
 import com.aquextheseal.woe.network.elementdata.SetSkillLevelPacket;
 import com.aquextheseal.woe.network.keybinds.SkillClientPacket;
 import com.aquextheseal.woe.network.keybinds.SkillPacket;
+import com.aquextheseal.woe.network.skillutil.RightClickEmptyPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -25,9 +27,11 @@ public class MENetwork {
     public static void initializeNetwork() {
 
         // Client to server packets
-        CHANNEL.registerMessage(packetIndex++, SetSkillLevelPacket.class, SetSkillLevelPacket::encode, SetSkillLevelPacket::decode, SetSkillLevelPacket::execute);
+        CHANNEL.registerMessage(packetIndex++, RightClickEmptyPacket.class, RightClickEmptyPacket::encode, RightClickEmptyPacket::decode, RightClickEmptyPacket::execute);
 
+        CHANNEL.registerMessage(packetIndex++, SetSkillLevelPacket.class, SetSkillLevelPacket::encode, SetSkillLevelPacket::decode, SetSkillLevelPacket::execute);
         CHANNEL.registerMessage(packetIndex++, OpenElementMenuPacket.class, OpenElementMenuPacket::encode, OpenElementMenuPacket::decode, OpenElementMenuPacket::execute);
+        CHANNEL.registerMessage(packetIndex++, PauseGamePacket.class, PauseGamePacket::encode, PauseGamePacket::decode, PauseGamePacket::execute);
 
         CHANNEL.registerMessage(packetIndex++, SkillPacket.class, SkillPacket::encode, SkillPacket::decode, SkillPacket::execute);
 
