@@ -78,7 +78,7 @@ public class CrystalSparkSkill extends HoldableMagicSkill {
             for (LivingEntity entity : world.getEntitiesOfClass(LivingEntity.class, caster.getBoundingBox().inflate(6))) {
                 if (entity != caster) {
                     entity.hurt(DamageSource.LIGHTNING_BOLT, 2.0F);
-                    entity.knockback(1F, Mth.sin(caster.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(caster.getYRot() * ((float) Math.PI / 180F)));
+                    entity.knockback(1.2F, caster.getX() - entity.getX(), caster.getZ() - entity.getZ());
                 }
             }
             caster.playSound(SoundEvents.ELDER_GUARDIAN_CURSE, 0.50F, 3.5F);
@@ -141,10 +141,5 @@ public class CrystalSparkSkill extends HoldableMagicSkill {
         return
                 caster.getPersistentData().getBoolean(getRegistryName() + "isIncomplete") ?
                         60 : 300 - Mth.clamp((caster.experienceLevel / 2), 0, 150);
-    }
-
-    @Override
-    public boolean shouldStopActionWhen(Player player) {
-        return !player.getPersistentData().getBoolean(getRegistryName() + "holdingOn");
     }
 }

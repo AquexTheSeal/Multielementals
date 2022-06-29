@@ -2,6 +2,7 @@ package com.aquextheseal.woe.events;
 
 import com.aquextheseal.woe.Multielementals;
 import com.aquextheseal.woe.magic.MagicElement;
+import com.aquextheseal.woe.registry.MEMobEffects;
 import com.aquextheseal.woe.util.mixininterfaces.MagicPlayer;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -19,10 +20,10 @@ public class OverlayEvents {
 
     @SubscribeEvent
     public static void renderOverlay(RenderGameOverlayEvent.Pre event) {
+        Player entity = Minecraft.getInstance().player;
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
             int w = event.getWindow().getGuiScaledWidth();
             int h = event.getWindow().getGuiScaledHeight();
-            Player entity = Minecraft.getInstance().player;
 
             if (entity instanceof MagicPlayer magicPlayer) {
                 MagicElement magic = magicPlayer.getMagicElement();
@@ -82,6 +83,12 @@ public class OverlayEvents {
                     RenderSystem.disableBlend();
                     RenderSystem.setShaderColor(1, 1, 1, 1);
                 }
+            }
+        }
+
+        if (entity != null) {
+            if (entity.hasEffect(MEMobEffects.PARALYSIS.get())) {
+                RenderSystem.setShaderColor(0.85F, 0.72F, 1.0F, 0.35F);
             }
         }
     }

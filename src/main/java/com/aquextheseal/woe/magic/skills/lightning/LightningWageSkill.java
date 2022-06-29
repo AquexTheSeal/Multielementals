@@ -26,8 +26,6 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 
 public class LightningWageSkill extends HoldableMagicSkill {
-    //private float lwRotVal = 0;
-    //private float lwHandRotVal = 0;
 
     public LightningWageSkill(String registryName) {
         super(registryName, MEMagicElements.LIGHTNING);
@@ -137,10 +135,5 @@ public class LightningWageSkill extends HoldableMagicSkill {
         return
                 caster.getPersistentData().getBoolean(getRegistryName() + "isIncomplete") ?
                         60 : 500 - Mth.clamp((caster.experienceLevel / 2), 0, 150);
-    }
-
-    @Override
-    public boolean shouldStopActionWhen(Player player) {
-        return !player.getPersistentData().getBoolean(getRegistryName() + "holdingOn");
     }
 }

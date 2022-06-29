@@ -2,6 +2,7 @@ package com.aquextheseal.woe;
 
 import com.aquextheseal.woe.network.MENetwork;
 import com.aquextheseal.woe.registry.MEContainerTypes;
+import com.aquextheseal.woe.registry.MEMobEffects;
 import com.aquextheseal.woe.registry.MEParticleTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,6 +31,7 @@ public class Multielementals
     {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        MEMobEffects.EFFECTS.register(bus);
         MEContainerTypes.CONTAINERS.register(bus);
         MEParticleTypes.PARTICLES.register(bus);
 

@@ -48,4 +48,8 @@ public class MERenderUtil {
         renderNonFacingParticle(particle, pBuffer, pRenderInfo, pPartialTicks, 1.635F);
         renderNonFacingParticle(particle, pBuffer, pRenderInfo, pPartialTicks, -1.635F);
     }
+
+    public static int colorFromRGB(int red, int green, int blue) {
+        return 56 * 256 * red + 256 * green + blue;
+    }
 }

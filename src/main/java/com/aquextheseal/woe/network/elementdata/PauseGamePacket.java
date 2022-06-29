@@ -29,9 +29,11 @@ public class PauseGamePacket {
             Level world = player.getCommandSenderWorld();
 
             if (player instanceof MagicPlayer magicPlayer) {
-                for (MagicSkill element : magicPlayer.getMagicElement().skillsList()) {
-                    if (element instanceof HoldableMagicSkill holdable) {
-                        holdable.release(player, world);
+                if (magicPlayer.getMagicElement() != null) {
+                    for (MagicSkill element : magicPlayer.getMagicElement().skillsList()) {
+                        if (element instanceof HoldableMagicSkill holdable) {
+                            holdable.release(player, world);
+                        }
                     }
                 }
             }

@@ -68,9 +68,4 @@ public class FlamingLeapSkill extends MagicSkill {
     public int getMaxCooldown(Player caster) {
         return 300 - Mth.clamp((caster.experienceLevel / 2), 0, 150);
     }
-
-    @Override
-    public boolean shouldStopActionWhen(Player player) {
-        return player.isOnGround();
-    }
 }

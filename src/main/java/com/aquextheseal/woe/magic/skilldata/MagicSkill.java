@@ -28,15 +28,49 @@ public abstract class MagicSkill {
         return registryName;
     }
 
+    /**
+     * The skill image that would be displayed in your overlay when you get this skill.
+     */
     public abstract ResourceLocation getSkillIcon(Player caster);
 
+    /**
+     * Executes when you press this skill.
+     */
     public abstract void onExecution(Player caster, Level world);
 
+    /**
+     * Base skill cooldown, measured in ticks.
+     */
     public abstract int getMaxCooldown(Player caster);
 
-    public abstract boolean shouldStopActionWhen(Player player);
-
+    /**
+     * Multiplies the default XP upgrading cost for this skill.
+     */
     public abstract int getExpenseMultiplier();
+
+    /**
+     * A tick method that executes only when the skill is ready for use.
+     */
+    public void noCDSkillTick(Player caster, Level world) {
+    }
+
+    /**
+     * A tick method that executes all the time as long as you have this skill.
+     */
+    public void baseSkillTick(Player caster, Level world) {
+    }
+
+    /**
+     * Animate body part rotations and positions for the player.
+     */
+    public <T extends LivingEntity> void setupSkillAnimation(Player player, HumanoidModel<T> model, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+    }
+
+    /**
+     * Edits the rotation, scale, and the position for the player's entire body using PoseStacks.
+     */
+    public void setupSkillRotation(AbstractClientPlayer pEntityLiving, PoseStack pMatrixStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks) {
+    }
 
     public final MagicElement getElement() {
         return element;
@@ -50,16 +84,8 @@ public abstract class MagicSkill {
         return getTranslationKey() + ".desc";
     }
 
-    public void noCDSkillTick(Player caster, Level world) {
-    }
-
-    public void baseSkillTick(Player caster, Level world) {
-    }
-
-    public <T extends LivingEntity> void setupSkillAnimation(Player player, HumanoidModel<T> model, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-    }
-
-    public void setupSkillRotation(AbstractClientPlayer pEntityLiving, PoseStack pMatrixStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks) {
+    public boolean shouldStopActionWhen(Player player) {
+        return false;
     }
 
     public int getLevel(MagicPlayer magicPlayer) {

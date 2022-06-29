@@ -29,9 +29,11 @@ public abstract class MinecraftMixin {
     @Inject(method = "pauseGame", at = @At(value = "TAIL"))
     public void handlePauseGame(boolean pPauseOnly, CallbackInfo ci) {
         if (player instanceof MagicPlayer magicPlayer) {
-            for (MagicSkill element : magicPlayer.getMagicElement().skillsList()) {
-                if (element instanceof HoldableMagicSkill holdable) {
-                    holdable.release(player, level);
+            if (magicPlayer.getMagicElement() != null) {
+                for (MagicSkill element : magicPlayer.getMagicElement().skillsList()) {
+                    if (element instanceof HoldableMagicSkill holdable) {
+                        holdable.release(player, level);
+                    }
                 }
             }
         }
